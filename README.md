@@ -1,31 +1,97 @@
-# CONTROLE-DE-BENFICIOS-SEDUC-SP
-TABELA DE CONTROLE DE LICENÇA  PREMIO, QUINQUENIO E SEXTA PARTE 
-COMO USAR ESTA PLANILHA  –  INSTRUÇÕES E LEGENDA									
-									
-Controle de Licença Prêmio | Quinquênio (ATS) | Sexta Parte  –  SEDUC-SP									
-									
-📌 COMO USAR — PASSO A PASSO									
-Passo 1		Escolha a aba do benefício que deseja controlar: 🏅 Licença Prêmio, 📅 Quinquênio ou ⭐ Sexta Parte.							
-Passo 2		Na tabela 'VÍNCULOS', preencha cada linha com Início e Fim de cada período de exercício. Deixe o Fim em BRANCO se o vínculo ainda estiver ativo — o sistema usa a data de hoje automaticamente.							
-Passo 3		Registre as faltas de cada período: F.Injustificada | F.Justificada | Lic.Saúde | Lic.s/Venc. Use linhas separadas por período.							
-Passo 4		Os TOTAIS calculam automaticamente: dias brutos, efetivos, anos acumulados.							
-Passo 5		A seção PREVISÃO mostra: quantos blocos/quinquênios você já completou, a data exata do próximo direito e quantos dias ainda faltam.							
-Passo 6		Se houver FALTA INJUSTIFICADA ou LIC. S/VENCIMENTOS: o período é interrompido. Cadastre um NOVO vínculo com a data de retorno para reiniciar a contagem.							
-Passo 7		Cada aba funciona de forma INDEPENDENTE. Você pode usar só Licença Prêmio, só Quinquênio, só Sexta Parte, ou todas juntas — cada uma com seus próprios vínculos e cálculos.							
-Passo 8		As células AZUIS são de entrada (você preenche). As células com fórmula calculam automaticamente — não edite.							
-									
-COMPARATIVO: NOVA RESOLUÇÃO vs. ANTERIOR									
-									
-Critério	"Nova Resolução
-(LC 1374/2022 + Res.SEDUC 97/2025)"	"Resolução Anterior
-(SE 5/2007 e anteriores)"							
-Atestado médico entregue no dia	✅ Não conta no limite de 30 dias	⚠️ Conta como falta justificada							
-Falta injustificada	⛔ INTERROMPE o período quinquenal	⛔ INTERROMPE o período quinquenal							
-Falta abonada (até 6/ano)	✅ Não interrompe — entra no limite de 30d	✅ Não interrompe — entra no limite de 30d							
-Licença para tratamento de saúde	✅ Conta no limite de 30 dias	✅ Conta no limite de 30 dias							
-Licença sem vencimentos	⛔ INTERROMPE o período	⛔ INTERROMPE o período							
-Suspensão / penalidade adm.	⛔ INTERROMPE o período	⛔ INTERROMPE o período							
-Limite faltas descontáveis (LP)	30 dias por quinquênio	30 dias por quinquênio							
-Período pandemia (mai/2020–dez/2021)	Não computa (salvo decisão judicial)	N/A — anterior à pandemia							
-Férias / Lic. Maternidade / Acidente	✅ Efetivo exercício pleno — não conta	✅ Efetivo exercício pleno — não conta							
-<img width="1030" height="786" alt="image" src="https://github.com/user-attachments/assets/3a8e1d5a-8519-474a-91cf-355813cca40b" />
+📋 Controle de Benefícios — Magistério SEDUC-SP
+Ferramenta web para acompanhamento dos benefícios do servidor docente do Estado de São Paulo: Licença Prêmio, Quinquênio (ATS) e Sexta Parte.
+
+Arquivo único HTML+CSS+JS — sem instalação, sem servidor, sem cadastro.
+Funciona direto no navegador e salva os dados localmente.
+
+
+🚀 Acesso
+GitHub Pages:
+👉 https://<seu-usuario>.github.io/<nome-do-repositorio>
+
+✨ Funcionalidades
+
+Múltiplos vínculos — Adicione quantos períodos de exercício quiser (afastamentos, rematrículas, retornos)
+Cálculo automático — Dias brutos, dias efetivos, totais e blocos completos calculados em tempo real
+Previsão com data exata — Data do próximo direito e contagem regressiva em dias corridos
+Alertas de interrupção — Linhas com falta injustificada ou licença s/vencimentos ficam destacadas em vermelho
+3 abas independentes — Cada benefício tem sua própria tabela de vínculos e cálculos separados
+Dados persistentes — Salvos automaticamente no navegador (não perde ao fechar)
+Exportar CSV — Baixe os vínculos de cada aba
+Imprimir / PDF — Botão de impressão em cada aba
+
+
+📖 Como usar
+
+Abra o arquivo no navegador ou acesse pelo GitHub Pages
+Clique na aba do benefício desejado: 🏅 Licença Prêmio, 📅 Quinquênio ou ⭐ Sexta Parte
+Clique em + Adicionar Vínculo e preenche:
+
+Início do período de exercício
+Fim (deixe em branco se ainda estiver ativo — o sistema usa a data de hoje)
+Cargo/Categoria
+Faltas do período nas colunas correspondentes
+
+
+Os totais e previsões atualizam automaticamente
+Interrupção? Se houve falta injustificada ou licença s/vencimentos, encerre o vínculo na data do evento e crie um novo vínculo a partir da data de retorno
+
+
+📐 Regras implementadas
+🏅 Licença Prêmio
+Base legal: Lei 10.261/68, Art. 209 | LC 1048/08 | LC 1361/2021 | LC 1374/2022
+RegraDetalhePeríodo aquisitivo5 anos = 1.826 dias de efetivo exercícioDireito90 dias por bloco completoLimite de faltas25 dias por quinquênio (vigente desde LC 1.361/2021, a partir de períodos fechados em 01/01/2022)Faltas que contam no limiteFalta abonada + Falta médica/atestado + Licença Saúde DPME (própria e familiar)Interrompem o períodoFalta injustificada · Suspensão/Penalidade · Licença s/Vencimentos · Afastamento eleitoralNão interrompem e não contam no limiteFérias · Lic. Maternidade · Acidente de trabalho · Lic. Prêmio · Casamento (8d) · Óbito familiar · Doação de sangueRegra anterior (períodos fechados até 27/05/2020)Limite de 30 dias — faltas abonadas não computavam
+
+⚠️ Falta médica (atestado particular): conta nas 25 faltas. NÃO interrompe o período.
+⚠️ Licença Saúde DPME: conta nas 25 faltas. NÃO interrompe o período.
+✅ Licença Saúde DPME acima de 90 dias: suspende a contagem (não interrompe — reinicia de onde parou).
+
+📅 Quinquênio (ATS)
+Base legal: Art. 129 do Estatuto do Magistério (CE-SP)
+RegraDetalhePeríodoA cada 5 anos (1.826 dias) de efetivo serviçoAdicional+5% sobre o salário base por quinquênio completoMáximo12 quinquênios (60 anos de serviço)ConcessãoAutomática — sem necessidade de requerimentoInterrupçõesMesmas regras da Licença Prêmio
+⭐ Sexta Parte
+Base legal: Art. 129 CE-SP
+RegraDetalheRequisito20 anos de efetivo serviço (7.305 dias)Adicional1/6 ≈ 16,67% sobre os vencimentos integraisAfastamentosDeduzem dias do período aquisitivoRestriçãoVedado efeito cascata com quinquênio
+
+🔄 Mudanças da Nova Resolução (LC 1374/2022 + Res. SEDUC 97/2025)
+CritérioNova regraRegra anteriorLimite de faltas25 dias30 diasFalta abonadaConta nas 25Não computavaFalta médica / atestadoConta nas 25Contava nas 30Lic. Saúde DPMEConta nas 25Contava nas 30Atestado entregue no diaMais flexível (Res. 97/2025)Mais restritivoFalta injustificadaINTERROMPEINTERROMPELic. s/ VencimentosINTERROMPEINTERROMPE
+
+🗓️ Período de Pandemia (28/05/2020 a 31/12/2021)
+
+O STF concedeu liminar (jul/2023) suspendendo o cômputo do período pandêmico para fins de Licença Prêmio, Quinquênio e Sexta Parte.
+Esse período não conta como efetivo exercício para esses benefícios, salvo decisão judicial individual.
+
+
+⚖️ Base Legal Completa
+
+Lei nº 10.261/68, Art. 78, 209, 210, 213, 324
+Lei Complementar nº 1048/08
+Lei Complementar nº 1361/2021
+Lei Complementar nº 1374/2022
+Resolução SEDUC nº 97/2025
+Estatuto do Magistério (CE-SP), Art. 129
+Res. SE 89/2005
+
+
+🛠️ Tecnologia
+
+HTML5 + CSS3 + JavaScript puro
+Arquivo único — sem dependências externas (exceto Google Fonts)
+Armazenamento via localStorage do navegador
+Compatível com Chrome, Firefox, Edge e Safari
+
+
+📌 Como publicar no GitHub Pages
+
+Crie um repositório no GitHub
+Faça upload do arquivo controle-beneficios-seduc.html
+Renomeie para index.html (ou acesse pelo nome completo na URL)
+Vá em Settings → Pages → Source: main branch → Save
+Aguarde ~1 minuto e acesse: https://<usuario>.github.io/<repositorio>
+
+
+⚠️ Aviso
+Esta ferramenta é um auxiliar de acompanhamento pessoal. Os cálculos são baseados nas leis e resoluções vigentes listadas acima. Em caso de dúvida ou contestação, consulte a Diretoria de Ensino ou o Departamento de Recursos Humanos da SEDUC-SP.
+
+Desenvolvido  por FELIPE RIBEIRO DE LIMA
+para uso dos servidores docentes do Estado de São Paulo.
