@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Controle de Benefícios – Magistério SEDUC-SP</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:       #0f2744;
+  --navy-mid:   #1a3a5c;
+  --navy-light: #2e5f8a;
+  --gold:       #e8a020;
+  --gold-light: #fff3d0;
+  --teal:       #0d6e6e;
+  --teal-light: #d0f0ee;
+  --green:      #1a6b3a;
+  --green-light:#d4edda;
+  --red:        #9c0006;
+  --red-light:  #ffc7ce;
+  --orange:     #7f4c00;
+  --orange-light:#fff0c0;
+  --purple:     #4b0082;
+  --purple-light:#ede0ff;
+  --grey-100:   #f7f8fa;
+  --grey-200:   #eef0f4;
+  --grey-300:   #d4d8e0;
+  --grey-600:   #6b7280;
+  --grey-900:   #111827;
+  --white:      #ffffff;
+  --radius:     10px;
+  --shadow:     0 4px 24px rgba(15,39,68,.10);
+  --shadow-lg:  0 8px 40px rgba(15,39,68,.16);
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--grey-100);
+  color: var(--grey-900);
+  min-height: 100vh;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 55%, var(--teal) 100%);
+  padding: 48px 32px 56px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content:'';
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse 60% 80% at 80% 20%, rgba(232,160,32,.18) 0%, transparent 60%);
+  pointer-events:none;
+}
+.hero-inner { max-width:900px; margin:0 auto; position:relative; }
+.hero-badge {
+  display:inline-block;
+  background: rgba(232,160,32,.2);
+  border: 1px solid rgba(232,160,32,.5);
+  color: var(--gold);
+  font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+  padding:4px 12px; border-radius:20px; margin-bottom:16px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 4vw, 42px);
+  color: var(--white);
+  line-height:1.2; margin-bottom:10px;
+}
+.hero p {
+  color: rgba(255,255,255,.7);
+  font-size:14px; max-width:600px; line-height:1.7;
+}
+.hero-dots {
+  display:flex; gap:8px; margin-top:24px;
+}
+.hero-dot {
+  width:10px; height:10px; border-radius:50%;
+  background:rgba(255,255,255,.3);
+  cursor:pointer; transition: all .2s;
+}
+.hero-dot.active { background:var(--gold); transform:scale(1.3); }
+
+/* ── NAV TABS ── */
+.nav-wrap {
+  background: var(--navy);
+  position:sticky; top:0; z-index:100;
+  box-shadow: 0 2px 16px rgba(0,0,0,.25);
+}
+.nav {
+  display:flex; max-width:900px; margin:0 auto;
+  overflow-x:auto; scrollbar-width:none;
+}
+.nav::-webkit-scrollbar { display:none; }
+.nav-tab {
+  flex-shrink:0;
+  padding:14px 20px;
+  color:rgba(255,255,255,.55);
+  font-size:13px; font-weight:500;
+  cursor:pointer;
+  border-bottom:3px solid transparent;
+  transition:all .2s;
+  white-space:nowrap;
+  background:none; border-top:none; border-left:none; border-right:none;
+  font-family: var(--font-body);
+}
+.nav-tab:hover { color:rgba(255,255,255,.85); }
+.nav-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+/* ── MAIN LAYOUT ── */
+.main { max-width:900px; margin:0 auto; padding:28px 20px 60px; }
+
+.section { display:none; animation: fadeIn .3s ease; }
+.section.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── CARD ── */
+.card {
+  background:var(--white);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  margin-bottom:20px;
+  overflow:hidden;
+}
+.card-header {
+  padding:14px 20px;
+  display:flex; align-items:center; gap:10px;
+}
+.card-header.navy   { background:var(--navy); }
+.card-header.teal   { background:var(--teal); }
+.card-header.purple { background:var(--purple); }
+.card-header.green  { background:var(--green); }
+.card-header h2 {
+  font-family:var(--font-display);
+  font-size:17px; color:var(--white); font-style:italic;
+}
+.card-header .icon { font-size:20px; }
+.card-body { padding:20px; }
+
+/* ── VÍNCULOS TABLE ── */
+.vt-scroll { overflow-x:auto; }
+.vt {
+  width:100%; border-collapse:collapse; font-size:12.5px;
+  min-width:700px;
+}
+.vt th {
+  background:var(--navy); color:var(--white);
+  padding:9px 8px; text-align:center;
+  font-size:11px; font-weight:600; letter-spacing:.03em;
+  white-space:nowrap;
+  border:1px solid rgba(255,255,255,.1);
+}
+.vt td {
+  padding:5px 4px;
+  border:1px solid var(--grey-200);
+  vertical-align:middle;
+}
+.vt tr:nth-child(even) td { background:var(--grey-100); }
+.vt tr:hover td { background:#eef4ff; }
+.vt td:first-child {
+  text-align:center; font-weight:600; color:var(--grey-600);
+  font-size:11px; background:var(--grey-200) !important;
+  width:32px;
+}
+.vt input[type=date], .vt input[type=number], .vt input[type=text] {
+  width:100%; border:1px solid var(--grey-300);
+  border-radius:5px; padding:5px 6px;
+  font-size:12px; font-family:var(--font-body);
+  background:var(--white); color:var(--navy);
+  transition:border .15s, box-shadow .15s;
+}
+.vt input:focus {
+  outline:none; border-color:var(--navy-light);
+  box-shadow:0 0 0 3px rgba(46,95,138,.15);
+}
+.vt input[type=number] { text-align:center; }
+.vt .calc-cell {
+  text-align:center; font-weight:600; font-size:12px;
+  background: var(--green-light) !important;
+  color:var(--green);
+}
+.vt .calc-cell.red { background:var(--red-light) !important; color:var(--red); }
+.vt .vt-actions { display:flex; gap:4px; justify-content:center; }
+.vt .btn-del {
+  background:none; border:1px solid var(--red-light);
+  color:var(--red); font-size:13px; cursor:pointer;
+  border-radius:4px; padding:2px 6px; transition:.15s;
+}
+.vt .btn-del:hover { background:var(--red-light); }
+
+.btn-add-row {
+  margin-top:10px; padding:8px 16px;
+  background:var(--navy); color:var(--white);
+  border:none; border-radius:6px;
+  font-size:12px; font-weight:600; cursor:pointer;
+  font-family:var(--font-body); transition:.2s;
+  display:flex; align-items:center; gap:6px;
+}
+.btn-add-row:hover { background:var(--navy-light); transform:translateY(-1px); }
+
+/* ── TOTAIS ── */
+.totais-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap:12px; margin-top:16px;
+}
+.tot-card {
+  border-radius:8px; padding:14px 16px;
+  border-left:4px solid var(--navy);
+  background:var(--grey-100);
+}
+.tot-card.green  { border-color:var(--green);  background:var(--green-light); }
+.tot-card.red    { border-color:var(--red);    background:var(--red-light); }
+.tot-card.orange { border-color:var(--orange); background:var(--orange-light); }
+.tot-card.purple { border-color:var(--purple); background:var(--purple-light); }
+.tot-card.gold   { border-color:var(--gold);   background:var(--gold-light); }
+.tot-card.teal   { border-color:var(--teal);   background:var(--teal-light); }
+.tot-label { font-size:10.5px; font-weight:600; color:var(--grey-600); text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
+.tot-value { font-family:var(--font-display); font-size:28px; color:var(--navy); }
+.tot-card.green  .tot-value { color:var(--green); }
+.tot-card.red    .tot-value { color:var(--red); }
+.tot-card.orange .tot-value { color:var(--orange); }
+.tot-card.purple .tot-value { color:var(--purple); }
+.tot-card.gold   .tot-value { color:#8a5c00; }
+.tot-card.teal   .tot-value { color:var(--teal); }
+.tot-sub { font-size:10px; color:var(--grey-600); margin-top:2px; }
+
+/* ── PREVISÃO ── */
+.prev-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap:14px; margin-bottom:20px;
+}
+.prev-item {
+  background:var(--grey-100);
+  border-radius:8px; padding:14px 16px;
+  border:1px solid var(--grey-300);
+  transition:.2s;
+}
+.prev-item:hover { box-shadow:var(--shadow); }
+.prev-label { font-size:11px; font-weight:600; color:var(--grey-600); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; }
+.prev-value { font-size:22px; font-family:var(--font-display); color:var(--navy); }
+.prev-sub { font-size:11px; color:var(--grey-600); margin-top:3px; }
+
+/* ── BLOCOS TABLE ── */
+.blocos-table { width:100%; border-collapse:collapse; font-size:12px; margin-top:8px; }
+.blocos-table th {
+  background:var(--teal); color:var(--white);
+  padding:9px 8px; text-align:center; font-size:11px; font-weight:600;
+  border:1px solid rgba(255,255,255,.15);
+}
+.blocos-table td {
+  padding:8px; border:1px solid var(--grey-200);
+  text-align:center; vertical-align:middle;
+}
+.blocos-table tr:nth-child(even) td { background:var(--teal-light); }
+.badge {
+  display:inline-block; padding:3px 9px; border-radius:20px;
+  font-size:10.5px; font-weight:600; white-space:nowrap;
+}
+.badge.ok      { background:var(--green-light); color:var(--green); }
+.badge.warn    { background:var(--orange-light); color:var(--orange); }
+.badge.done    { background:#d4edda; color:#155724; }
+.badge.pending { background:var(--purple-light); color:var(--purple); }
+.badge.error   { background:var(--red-light); color:var(--red); }
+
+/* ── STATUS BANNER ── */
+.status-banner {
+  border-radius:8px; padding:14px 18px;
+  display:flex; align-items:flex-start; gap:12px;
+  margin-bottom:16px; border:1px solid transparent;
+}
+.status-banner.green  { background:var(--green-light); border-color:#a8d5b5; }
+.status-banner.red    { background:var(--red-light); border-color:#f5a5a9; }
+.status-banner.orange { background:var(--orange-light); border-color:#ffd66e; }
+.status-banner.purple { background:var(--purple-light); border-color:#c4a3ff; }
+.status-banner .sb-icon { font-size:22px; flex-shrink:0; margin-top:1px; }
+.status-banner .sb-title { font-weight:700; font-size:13px; margin-bottom:2px; }
+.status-banner .sb-text { font-size:12px; color:var(--grey-600); line-height:1.5; }
+
+/* ── LEGENDA ── */
+.legenda { margin-top:16px; }
+.leg-item {
+  display:flex; align-items:flex-start; gap:10px;
+  padding:10px 12px; border-radius:6px; margin-bottom:6px;
+  font-size:12px; line-height:1.5;
+}
+.leg-item.ok     { background:var(--green-light); color:var(--green); }
+.leg-item.stop   { background:var(--red-light); color:var(--red); }
+.leg-item.nocount{ background:var(--orange-light); color:var(--orange); }
+.leg-item.tip    { background:var(--purple-light); color:var(--purple); }
+.leg-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+
+/* ── INSTRUCOES ── */
+.step-list { list-style:none; }
+.step-list li {
+  display:flex; gap:14px; align-items:flex-start;
+  padding:12px 0; border-bottom:1px solid var(--grey-200);
+}
+.step-list li:last-child { border:none; }
+.step-num {
+  flex-shrink:0; width:28px; height:28px;
+  border-radius:50%; background:var(--navy);
+  color:var(--white); font-size:12px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  margin-top:1px;
+}
+.step-text { font-size:13px; line-height:1.6; }
+.step-text strong { color:var(--navy); }
+
+.comp-table { width:100%; border-collapse:collapse; font-size:12px; margin-top:8px; }
+.comp-table th { background:var(--navy); color:var(--white); padding:10px; text-align:left; }
+.comp-table td { padding:9px 10px; border:1px solid var(--grey-200); vertical-align:top; }
+.comp-table tr:nth-child(even) td { background:var(--grey-100); }
+.comp-table .new { background:#eaf5ea; }
+.comp-table .old { background:#fff4ec; }
+.c-ok   { color:var(--green); font-weight:600; }
+.c-stop { color:var(--red); font-weight:600; }
+.c-warn { color:var(--orange); font-weight:600; }
+
+/* ── PRINT ── */
+.btn-export {
+  padding:9px 18px; border-radius:6px; font-size:12px; font-weight:600;
+  cursor:pointer; font-family:var(--font-body); transition:.2s;
+  border:none; display:inline-flex; align-items:center; gap:6px;
+}
+.btn-export.primary { background:var(--navy); color:var(--white); }
+.btn-export.primary:hover { background:var(--navy-light); }
+.btn-export.secondary { background:var(--white); color:var(--navy); border:1.5px solid var(--navy); }
+.btn-export.secondary:hover { background:var(--grey-100); }
+.export-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px) {
+  .hero { padding:32px 16px 40px; }
+  .main { padding:16px 12px 48px; }
+  .card-body { padding:14px; }
+  .totais-grid { grid-template-columns:1fr 1fr; }
+  .prev-grid { grid-template-columns:1fr; }
+}
+
+/* ── TOOLTIP ── */
+[data-tip] { position:relative; cursor:help; }
+[data-tip]::after {
+  content: attr(data-tip);
+  position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%);
+  background:var(--grey-900); color:var(--white);
+  font-size:11px; padding:5px 9px; border-radius:5px;
+  white-space:nowrap; pointer-events:none;
+  opacity:0; transition:opacity .15s;
+  z-index:200;
+}
+[data-tip]:hover::after { opacity:1; }
+
+/* ── INTERRUPCAO ALERT ── */
+.interrupcao-row td {
+  background: #fff0f0 !important;
+  border-top:2px solid var(--red) !important;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">SEDUC-SP · Magistério Estadual</div>
+    <h1>Controle de Benefícios<br>do Servidor Docente</h1>
+    <p>Licença Prêmio · Quinquênio (ATS) · Sexta Parte<br>
+    Registre múltiplos vínculos, some automaticamente e veja a previsão de quando terá direito a cada benefício.</p>
+    <div class="hero-dots">
+      <div class="hero-dot active" onclick="setTab('lp')"></div>
+      <div class="hero-dot" onclick="setTab('qq')"></div>
+      <div class="hero-dot" onclick="setTab('sp')"></div>
+      <div class="hero-dot" onclick="setTab('info')"></div>
+    </div>
+  </div>
+</div>
+
+<div class="nav-wrap">
+  <nav class="nav">
+    <button class="nav-tab active" onclick="setTab('lp')">🏅 Licença Prêmio</button>
+    <button class="nav-tab" onclick="setTab('qq')">📅 Quinquênio (ATS)</button>
+    <button class="nav-tab" onclick="setTab('sp')">⭐ Sexta Parte</button>
+    <button class="nav-tab" onclick="setTab('info')">ℹ️ Instruções</button>
+  </nav>
+</div>
+
+<main class="main">
+
+<!-- ══════════════════════════════════════════════════════ LICENÇA PRÊMIO -->
+<div id="sec-lp" class="section active">
+
+  <div class="export-row">
+    <button class="btn-export primary" onclick="printSection('lp')">🖨️ Imprimir</button>
+    <button class="btn-export secondary" onclick="exportCSV('lp')">⬇️ Exportar CSV</button>
+  </div>
+
+  <div id="status-lp" class="status-banner purple">
+    <div class="sb-icon">🔄</div>
+    <div><div class="sb-title">Calculando...</div><div class="sb-text">Preencha os vínculos abaixo.</div></div>
+  </div>
+
+  <!-- Vínculos -->
+  <div class="card">
+    <div class="card-header navy"><span class="icon">📁</span><h2>Vínculos / Períodos de Exercício</h2></div>
+    <div class="card-body">
+      <p style="font-size:12px;color:var(--grey-600);margin-bottom:12px;">
+        ✏️ Cada linha = um vínculo. Deixe <strong>Fim</strong> em branco se ainda estiver ativo.
+        Se houve <strong>falta injustificada ou licença s/vencimentos</strong>, crie uma nova linha a partir do retorno.
+      </p>
+      <div class="vt-scroll">
+        <table class="vt" id="vt-lp">
+          <thead><tr>
+            <th>#</th>
+            <th>Início</th>
+            <th>Fim (branco=ativo)</th>
+            <th>Cargo / Categoria</th>
+            <th data-tip="⛔ INTERROMPE o período — reinicia do zero">F.Injust.</th>
+            <th data-tip="Conta nas 25 faltas — não interrompe (até 6/ano)">F.Abonada</th>
+            <th data-tip="Conta nas 25 faltas — não interrompe (atestado médico)">F.Médica / Atestado</th>
+            <th data-tip="Conta nas 25 faltas — não interrompe (perícia DPME)">Lic.Saúde DPME</th>
+            <th data-tip="⛔ INTERROMPE o período — reinicia do zero">Lic.s/Venc.</th>
+            <th>Dias Brutos</th>
+            <th>Dias Efetivos</th>
+            <th></th>
+          </tr></thead>
+          <tbody id="vtb-lp"></tbody>
+        </table>
+      </div>
+      <button class="btn-add-row" onclick="addRow('lp')">+ Adicionar Vínculo</button>
+    </div>
+  </div>
+
+  <!-- Totais -->
+  <div class="card">
+    <div class="card-header teal"><span class="icon">📊</span><h2>Totais Automáticos</h2></div>
+    <div class="card-body">
+      <div class="totais-grid" id="totais-lp">
+        <div class="tot-card green"><div class="tot-label">Dias Efetivos</div><div class="tot-value" id="t-lp-ef">0</div><div class="tot-sub">Total acumulado</div></div>
+        <div class="tot-card gold"><div class="tot-label">Blocos Completos</div><div class="tot-value" id="t-lp-bl">0</div><div class="tot-sub">Direitos adquiridos (×90 dias)</div></div>
+        <div class="tot-card teal"><div class="tot-label">Dias LP Disponíveis</div><div class="tot-value" id="t-lp-dp">0</div><div class="tot-sub">Blocos × 90 dias</div></div>
+        <div class="tot-card orange"><div class="tot-label">Faltas Desc. no bloco atual</div><div class="tot-value" id="t-lp-fd">0</div><div class="tot-sub">Limite: 25 dias (abonada+médica+saúde)</div></div>
+        <div class="tot-card purple"><div class="tot-label">Faltas Restantes</div><div class="tot-value" id="t-lp-fr">25</div><div class="tot-sub">Até estourar o limite</div></div>
+        <div class="tot-card red"><div class="tot-label">Interrupções</div><div class="tot-value" id="t-lp-int">0</div><div class="tot-sub">F.Injust. + Lic.s/Venc.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Previsão por bloco -->
+  <div class="card">
+    <div class="card-header purple"><span class="icon">🔮</span><h2>Previsão por Bloco</h2></div>
+    <div class="card-body">
+      <div class="prev-grid">
+        <div class="prev-item">
+          <div class="prev-label">Saldo no bloco atual</div>
+          <div class="prev-value" id="p-lp-saldo">—</div>
+          <div class="prev-sub">dias acumulados (de 1.826)</div>
+        </div>
+        <div class="prev-item">
+          <div class="prev-label">Dias restantes</div>
+          <div class="prev-value" id="p-lp-rest">—</div>
+          <div class="prev-sub">para completar o próximo bloco</div>
+        </div>
+        <div class="prev-item">
+          <div class="prev-label">Data prevista do próximo bloco</div>
+          <div class="prev-value" id="p-lp-data" style="font-size:18px">—</div>
+          <div class="prev-sub" id="p-lp-datasub">preencha os vínculos</div>
+        </div>
+      </div>
+      <div class="vt-scroll">
+        <table class="blocos-table" id="bt-lp">
+          <thead><tr>
+            <th>Bloco</th><th>Início Previsto</th><th>Data do Direito</th>
+            <th>Dias Restantes Hoje</th><th>Status</th><th>Ação</th>
+          </tr></thead>
+          <tbody id="btb-lp"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detalhamento manual -->
+  <div class="card">
+    <div class="card-header navy"><span class="icon">📋</span><h2>Detalhamento dos Blocos Adquiridos</h2></div>
+    <div class="card-body">
+      <p style="font-size:12px;color:var(--grey-600);margin-bottom:12px;">Registre manualmente as certidões emitidas e o gozo/pecúnia de cada bloco.</p>
+      <div class="vt-scroll">
+        <table class="vt" id="dt-lp">
+          <thead><tr>
+            <th>#</th><th>Início Bloco</th><th>Fim Bloco</th>
+            <th>F.Abonada</th><th>F.Justif.</th><th>Lic.Saúde</th>
+            <th>Total Desc.</th><th>Status</th><th>Certidão (DO)</th>
+            <th>Saldo</th><th>Gozado</th><th>Pecúnia</th><th>Saldo Final</th><th>Obs</th>
+          </tr></thead>
+          <tbody id="dtb-lp"></tbody>
+        </table>
+      </div>
+      <button class="btn-add-row" onclick="addDetailRow('lp')">+ Adicionar Bloco</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header navy"><span class="icon">📖</span><h2>Legenda</h2></div>
+    <div class="card-body"><div class="legenda" id="leg-lp"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ QUINQUÊNIO -->
+<div id="sec-qq" class="section">
+
+  <div class="export-row">
+    <button class="btn-export primary" onclick="printSection('qq')">🖨️ Imprimir</button>
+    <button class="btn-export secondary" onclick="exportCSV('qq')">⬇️ Exportar CSV</button>
+  </div>
+
+  <div id="status-qq" class="status-banner purple">
+    <div class="sb-icon">🔄</div>
+    <div><div class="sb-title">Calculando...</div><div class="sb-text">Preencha os vínculos abaixo.</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header navy"><span class="icon">📁</span><h2>Vínculos / Períodos de Exercício</h2></div>
+    <div class="card-body">
+      <p style="font-size:12px;color:var(--grey-600);margin-bottom:12px;">
+        ✏️ Cada linha = um vínculo. Se houve interrupção, crie nova linha a partir do retorno.
+      </p>
+      <div class="vt-scroll">
+        <table class="vt" id="vt-qq">
+          <thead><tr>
+            <th>#</th><th>Início</th><th>Fim (branco=ativo)</th><th>Cargo / Categoria</th>
+            <th>F.Injust.</th><th>F.Abonada</th><th>F.Médica / Atestado</th>
+            <th>Lic.Saúde DPME</th><th>Lic.s/Venc.</th>
+            <th>Dias Brutos</th><th>Dias Efetivos</th><th></th>
+          </tr></thead>
+          <tbody id="vtb-qq"></tbody>
+        </table>
+      </div>
+      <button class="btn-add-row" onclick="addRow('qq')">+ Adicionar Vínculo</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header teal"><span class="icon">📊</span><h2>Totais Automáticos</h2></div>
+    <div class="card-body">
+      <div class="totais-grid">
+        <div class="tot-card green"><div class="tot-label">Dias Efetivos</div><div class="tot-value" id="t-qq-ef">0</div><div class="tot-sub">Total acumulado</div></div>
+        <div class="tot-card gold"><div class="tot-label">Quinquênios Completos</div><div class="tot-value" id="t-qq-bl">0</div><div class="tot-sub">ATS adquiridos</div></div>
+        <div class="tot-card teal"><div class="tot-label">% ATS Acumulado</div><div class="tot-value" id="t-qq-pct">0%</div><div class="tot-sub">Acréscimo no salário</div></div>
+        <div class="tot-card purple"><div class="tot-label">Dias Restantes</div><div class="tot-value" id="t-qq-rest">—</div><div class="tot-sub">Para o próximo ATS</div></div>
+        <div class="tot-card orange"><div class="tot-label">Descontos Acum.</div><div class="tot-value" id="t-qq-desc">0</div><div class="tot-sub">Abon.+Médica+Lic.Saúde</div></div>
+        <div class="tot-card red"><div class="tot-label">Interrupções</div><div class="tot-value" id="t-qq-int">0</div><div class="tot-sub">F.Injust. + Lic.s/Venc.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header purple"><span class="icon">🔮</span><h2>Previsão por Quinquênio</h2></div>
+    <div class="card-body">
+      <div class="prev-grid">
+        <div class="prev-item">
+          <div class="prev-label">Saldo no quinquênio atual</div>
+          <div class="prev-value" id="p-qq-saldo">—</div>
+          <div class="prev-sub">dias acumulados (de 1.826)</div>
+        </div>
+        <div class="prev-item">
+          <div class="prev-label">Dias restantes</div>
+          <div class="prev-value" id="p-qq-rest">—</div>
+          <div class="prev-sub">para o próximo ATS</div>
+        </div>
+        <div class="prev-item">
+          <div class="prev-label">Data prevista do próximo ATS</div>
+          <div class="prev-value" id="p-qq-data" style="font-size:18px">—</div>
+          <div class="prev-sub" id="p-qq-datasub">preencha os vínculos</div>
+        </div>
+      </div>
+      <div class="vt-scroll">
+        <table class="blocos-table" id="bt-qq">
+          <thead><tr>
+            <th>Quinq.</th><th>Período (anos)</th><th>Início Previsto</th>
+            <th>DATA DO DIREITO</th><th>Dias Restantes</th><th>% ATS</th><th>Status</th><th>Ação</th>
+          </tr></thead>
+          <tbody id="btb-qq"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header navy"><span class="icon">📖</span><h2>Legenda</h2></div>
+    <div class="card-body"><div class="legenda" id="leg-qq"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SEXTA PARTE -->
+<div id="sec-sp" class="section">
+
+  <div class="export-row">
+    <button class="btn-export primary" onclick="printSection('sp')">🖨️ Imprimir</button>
+    <button class="btn-export secondary" onclick="exportCSV('sp')">⬇️ Exportar CSV</button>
+  </div>
+
+  <div id="status-sp" class="status-banner purple">
+    <div class="sb-icon">🔄</div>
+    <div><div class="sb-title">Calculando...</div><div class="sb-text">Preencha os vínculos abaixo.</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header navy"><span class="icon">📁</span><h2>Vínculos / Períodos de Exercício</h2></div>
+    <div class="card-body">
+      <p style="font-size:12px;color:var(--grey-600);margin-bottom:12px;">
+        ✏️ Preencha todos os períodos de exercício. Afastamentos deduzem dias do tempo para a Sexta Parte.
+      </p>
+      <div class="vt-scroll">
+        <table class="vt" id="vt-sp">
+          <thead><tr>
+            <th>#</th><th>Início</th><th>Fim (branco=ativo)</th><th>Cargo / Categoria</th>
+            <th>F.Injust.</th><th>F.Abonada</th><th>F.Médica / Atestado</th>
+            <th>Lic.Saúde DPME</th><th>Lic.s/Venc.</th>
+            <th>Dias Brutos</th><th>Dias Efetivos</th><th></th>
+          </tr></thead>
+          <tbody id="vtb-sp"></tbody>
+        </table>
+      </div>
+      <button class="btn-add-row" onclick="addRow('sp')">+ Adicionar Vínculo</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header teal"><span class="icon">📊</span><h2>Totais Automáticos</h2></div>
+    <div class="card-body">
+      <div class="totais-grid">
+        <div class="tot-card green"><div class="tot-label">Dias Efetivos</div><div class="tot-value" id="t-sp-ef">0</div><div class="tot-sub">Total acumulado</div></div>
+        <div class="tot-card teal"><div class="tot-label">Equivalente em Anos</div><div class="tot-value" id="t-sp-anos">0,00</div><div class="tot-sub">Necessário: 20 anos</div></div>
+        <div class="tot-card purple"><div class="tot-label">Dias Restantes</div><div class="tot-value" id="t-sp-rest">—</div><div class="tot-sub">Para completar os 20 anos</div></div>
+        <div class="tot-card red"><div class="tot-label">Dias Adiados</div><div class="tot-value" id="t-sp-desc">0</div><div class="tot-sub">Por afastamentos</div></div>
+        <div class="tot-card orange"><div class="tot-label">% Concluído</div><div class="tot-value" id="t-sp-pct">0%</div><div class="tot-sub">Do período de 20 anos</div></div>
+        <div class="tot-card gold"><div class="tot-label">Adicional</div><div class="tot-value">1/6</div><div class="tot-sub">≈ 16,67% sobre vencimentos</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header purple"><span class="icon">🔮</span><h2>Previsão Automática</h2></div>
+    <div class="card-body">
+      <div class="prev-grid">
+        <div class="prev-item">
+          <div class="prev-label">Admissão (1º vínculo)</div>
+          <div class="prev-value" id="p-sp-adm" style="font-size:18px">—</div>
+          <div class="prev-sub">Data do primeiro vínculo</div>
+        </div>
+        <div class="prev-item">
+          <div class="prev-label">Data prevista do direito</div>
+          <div class="prev-value" id="p-sp-data" style="font-size:18px">—</div>
+          <div class="prev-sub" id="p-sp-datasub">preencha os vínculos</div>
+        </div>
+        <div class="prev-item">
+          <div class="prev-label">Dias corridos restantes</div>
+          <div class="prev-value" id="p-sp-rest">—</div>
+          <div class="prev-sub">a partir de hoje</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;" id="sp-impact-msg"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header navy"><span class="icon">📖</span><h2>Legenda</h2></div>
+    <div class="card-body"><div class="legenda" id="leg-sp"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ INSTRUÇÕES -->
+<div id="sec-info" class="section">
+  <div class="card">
+    <div class="card-header navy"><span class="icon">📌</span><h2>Como Usar — Passo a Passo</h2></div>
+    <div class="card-body">
+      <ul class="step-list">
+        <li><div class="step-num">1</div><div class="step-text">Escolha a aba do benefício: <strong>Licença Prêmio</strong>, <strong>Quinquênio</strong> ou <strong>Sexta Parte</strong>. Cada aba funciona de forma <strong>independente</strong>.</div></li>
+        <li><div class="step-num">2</div><div class="step-text">Na tabela <strong>Vínculos</strong>, clique em <strong>+ Adicionar Vínculo</strong> e preencha: data de Início, data de Fim (deixe em branco se ainda estiver ativo) e as faltas de cada período.</div></li>
+        <li><div class="step-num">3</div><div class="step-text">Os <strong>Totais</strong> calculam automaticamente: dias brutos, dias efetivos, blocos/quinquênios completos.</div></li>
+        <li><div class="step-num">4</div><div class="step-text">A <strong>Previsão</strong> mostra a data exata do próximo direito e quantos dias corridos faltam, considerando todas as faltas.</div></li>
+        <li><div class="step-num">5</div><div class="step-text"><strong>Se houve falta injustificada ou licença s/vencimentos:</strong> o período reinicia. Finalize o vínculo anterior com a data do evento e crie um <strong>novo vínculo</strong> com a data de retorno.</div></li>
+        <li><div class="step-num">6</div><div class="step-text">Os dados ficam salvos automaticamente no <strong>navegador</strong> (localStorage). Você não perde ao fechar a página.</div></li>
+        <li><div class="step-num">7</div><div class="step-text">Use o botão <strong>Exportar CSV</strong> para salvar uma cópia dos vínculos ou <strong>Imprimir</strong> para gerar um PDF.</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header teal"><span class="icon">📜</span><h2>Comparativo: Nova Resolução vs. Anterior</h2></div>
+    <div class="card-body">
+      <table class="comp-table">
+        <thead><tr><th>Critério</th><th class="new">Nova Res. (LC 1374/2022 + Res.SEDUC 97/2025) — limite 25d</th><th class="old">Resolução Anterior (SE 5/2007)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Atestado médico entregue no dia</strong></td><td class="new c-ok">✅ Não conta no limite de 30d</td><td class="old c-warn">⚠️ Conta como falta justificada</td></tr>
+          <tr><td><strong>Falta injustificada</strong></td><td class="new c-stop">⛔ INTERROMPE o período quinquenal</td><td class="old c-stop">⛔ INTERROMPE o período quinquenal</td></tr>
+          <tr><td><strong>Falta abonada (até 6/ano)</strong></td><td class="new c-ok">✅ Não interrompe — entra no limite de 25d</td><td class="old c-ok">✅ Não interrompe — entra no limite de 25d</td></tr>
+          <tr><td><strong>Licença para tratamento de saúde</strong></td><td class="new c-warn">⚠️ Conta no limite de 25 dias</td><td class="old c-warn">⚠️ Conta no limite de 30 dias</td></tr>
+          <tr><td><strong>Licença sem vencimentos</strong></td><td class="new c-stop">⛔ INTERROMPE o período</td><td class="old c-stop">⛔ INTERROMPE o período</td></tr>
+          <tr><td><strong>Suspensão / penalidade</strong></td><td class="new c-stop">⛔ INTERROMPE o período</td><td class="old c-stop">⛔ INTERROMPE o período</td></tr>
+          <tr><td><strong>Férias / Lic. Maternidade / Acidente</strong></td><td class="new c-ok">✅ Efetivo exercício — não conta</td><td class="old c-ok">✅ Efetivo exercício — não conta</td></tr>
+          <tr><td><strong>Período pandemia (mai/2020–dez/2021)</strong></td><td class="new c-stop">Não computa (salvo decisão judicial)</td><td class="old">N/A</td></tr>
+          <tr><td><strong>Limite faltas descontáveis (LP)</strong></td><td class="new"><strong>25 dias</strong> (abonada + médica + lic.saúde DPME)</td><td class="old">30 dias (incluía falta justificada)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header navy"><span class="icon">⚖️</span><h2>Base Legal</h2></div>
+    <div class="card-body">
+      <ul style="font-size:13px;line-height:2;padding-left:18px;color:var(--grey-600);">
+        <li><strong>Licença Prêmio:</strong> Lei nº 10.261/68, Art. 209 e 213 | LC 1048/08</li>
+        <li><strong>Quinquênio (ATS):</strong> Art. 129 do Estatuto do Magistério (CE-SP)</li>
+        <li><strong>Sexta Parte:</strong> Art. 129 CE-SP | vedado efeito cascata com ATS</li>
+        <li><strong>Faltas descontáveis (LP):</strong> Res. SE 89/2005 | LC 1374/2022 | Res. SEDUC 97/2025 — <strong>limite: 25 dias</strong> por quinquênio</li>
+        <li><strong>Faltas abonadas:</strong> Art. 110 §1º Lei nº 10.261/68 (até 6/ano)</li>
+        <li><strong>Licença s/ vencimentos:</strong> Art. 202 Lei nº 10.261/68</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</main>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────────────
+const STORE_KEY = 'seduc_beneficios_v4';
+let state = { lp:[], qq:[], sp:[], lp_det:[] };
+
+function save() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch(e){}
+}
+function load() {
+  try {
+    const s = localStorage.getItem(STORE_KEY);
+    if (s) state = {...state, ...JSON.parse(s)};
+  } catch(e){}
+  if (!state.lp.length) addRow('lp',false);
+  if (!state.qq.length) addRow('qq',false);
+  if (!state.sp.length) addRow('sp',false);
+  if (!state.lp_det.length) addDetailRow('lp',false);
+}
+
+// ── TABS ──────────────────────────────────────────────────────────────────
+function setTab(id) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  const tabs = ['lp','qq','sp','info'];
+  const idx = tabs.indexOf(id);
+  document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  document.querySelectorAll('.hero-dot').forEach((d,i)=>{
+    d.classList.toggle('active', i===idx);
+  });
+  recalc(id);
+}
+
+// ── DATE UTILS ─────────────────────────────────────────────────────────────
+function parseDate(s) {
+  if (!s) return null;
+  const d = new Date(s + 'T00:00:00');
+  return isNaN(d) ? null : d;
+}
+function fmtDate(d) {
+  if (!d) return '—';
+  return d.toLocaleDateString('pt-BR');
+}
+function daysBetween(a, b) {
+  return Math.round((b - a) / 86400000);
+}
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+
+function addDays(d, n) {
+  const r = new Date(d);
+  r.setDate(r.getDate() + n);
+  return r;
+}
+
+// ── ROW TEMPLATES ──────────────────────────────────────────────────────────
+function rowId(sheet, i) { return `r-${sheet}-${i}`; }
+
+function buildVtRow(sheet, i, row) {
+  const id = rowId(sheet, i);
+  return `<tr id="${id}" data-sheet="${sheet}" data-idx="${i}">
+    <td>${i+1}</td>
+    <td><input type="date" class="vi-inicio" value="${row.inicio||''}" onchange="onVtChange('${sheet}',${i},'inicio',this.value)"></td>
+    <td><input type="date" class="vi-fim" value="${row.fim||''}" onchange="onVtChange('${sheet}',${i},'fim',this.value)"></td>
+    <td><input type="text" class="vi-cargo" value="${row.cargo||''}" placeholder="ex: PEB II" onchange="onVtChange('${sheet}',${i},'cargo',this.value)" style="width:100%;min-width:90px"></td>
+    <td><input type="number" min="0" class="vi-inj" value="${row.inj||0}" onchange="onVtChange('${sheet}',${i},'inj',+this.value)"></td>
+    <td><input type="number" min="0" class="vi-abo" value="${row.abo||0}" onchange="onVtChange('${sheet}',${i},'abo',+this.value)"></td>
+    <td><input type="number" min="0" class="vi-med" value="${row.med||0}" onchange="onVtChange('${sheet}',${i},'med',+this.value)"></td>
+    <td><input type="number" min="0" class="vi-sau" value="${row.sau||0}" onchange="onVtChange('${sheet}',${i},'sau',+this.value)"></td>
+    <td><input type="number" min="0" class="vi-sv" value="${row.sv||0}" onchange="onVtChange('${sheet}',${i},'sv',+this.value)"></td>
+    <td class="calc-cell${(row.inj||0)+(row.sv||0)>0?' red':''}" id="cb-${id}">—</td>
+    <td class="calc-cell" id="ce-${id}">—</td>
+    <td><div class="vt-actions"><button class="btn-del" onclick="delRow('${sheet}',${i})" title="Remover">✕</button></div></td>
+  </tr>`;
+}
+
+function buildDetailRow(sheet, i, row) {
+  const id = `dr-${sheet}-${i}`;
+  return `<tr id="${id}">
+    <td>${i+1}</td>
+    <td><input type="date" value="${row.ini||''}" onchange="onDetChange('${sheet}',${i},'ini',this.value)" style="width:100%"></td>
+    <td><input type="date" value="${row.fim||''}" onchange="onDetChange('${sheet}',${i},'fim',this.value)" style="width:100%"></td>
+    <td><input type="number" min="0" value="${row.fab||0}" onchange="onDetChange('${sheet}',${i},'fab',+this.value)" style="width:52px;text-align:center"></td>
+    <td><input type="number" min="0" value="${row.fju||0}" onchange="onDetChange('${sheet}',${i},'fju',+this.value)" style="width:52px;text-align:center"></td>
+    <td><input type="number" min="0" value="${row.lsa||0}" onchange="onDetChange('${sheet}',${i},'lsa',+this.value)" style="width:52px;text-align:center"></td>
+    <td class="calc-cell" id="dtd-${id}">${(row.fab||0)+(row.fju||0)+(row.lsa||0)}</td>
+    <td id="dts-${id}" style="text-align:center">—</td>
+    <td><input type="date" value="${row.cert||''}" onchange="onDetChange('${sheet}',${i},'cert',this.value)" style="width:100%"></td>
+    <td class="calc-cell" id="dsl-${id}">—</td>
+    <td><input type="number" min="0" value="${row.goz||0}" onchange="onDetChange('${sheet}',${i},'goz',+this.value)" style="width:52px;text-align:center"></td>
+    <td><input type="number" min="0" value="${row.pec||0}" onchange="onDetChange('${sheet}',${i},'pec',+this.value)" style="width:52px;text-align:center"></td>
+    <td class="calc-cell" id="dsf-${id}">—</td>
+    <td><input type="text" value="${row.obs||''}" onchange="onDetChange('${sheet}',${i},'obs',this.value)" placeholder="Observações" style="width:100%;min-width:100px"></td>
+  </tr>`;
+}
+
+function renderVt(sheet) {
+  const rows = state[sheet];
+  document.getElementById('vtb-'+sheet).innerHTML =
+    rows.map((r,i) => buildVtRow(sheet, i, r)).join('');
+  updateCalcCells(sheet);
+}
+
+function renderDetailTable() {
+  const rows = state.lp_det;
+  document.getElementById('dtb-lp').innerHTML =
+    rows.map((r,i) => buildDetailRow('lp', i, r)).join('');
+  updateDetailCalcs();
+}
+
+function updateCalcCells(sheet) {
+  const rows = state[sheet];
+  rows.forEach((row, i) => {
+    const id = rowId(sheet, i);
+    const inicio = parseDate(row.inicio);
+    const fim    = parseDate(row.fim);
+    const end    = fim || TODAY;
+    const brutos = inicio ? Math.max(0, daysBetween(inicio, end) + 1) : 0;
+    const descs  = (row.inj||0) + (row.abo||0) + (row.med||0) + (row.sau||0) + (row.sv||0);
+    const efetivo= Math.max(0, brutos - descs);
+
+    const cb = document.getElementById('cb-'+id);
+    const ce = document.getElementById('ce-'+id);
+    if (cb) {
+      cb.textContent = inicio ? brutos.toLocaleString('pt-BR') : '—';
+      cb.className = 'calc-cell' + ((row.inj||0)+(row.sv||0)>0?' red':'');
+    }
+    if (ce) ce.textContent = inicio ? efetivo.toLocaleString('pt-BR') : '—';
+
+    // highlight interruption row
+    const tr = document.getElementById(rowId(sheet,i));
+    if (tr) tr.className = ((row.inj||0)+(row.sv||0)>0 ? 'interrupcao-row' : '');
+  });
+}
+
+function updateDetailCalcs() {
+  state.lp_det.forEach((row,i) => {
+    const id = `dr-lp-${i}`;
+    const total = (row.fab||0)+(row.fju||0)+(row.lsa||0);
+    const el_td = document.getElementById('dtd-'+id);
+    const el_st = document.getElementById('dts-'+id);
+    const el_sl = document.getElementById('dsl-'+id);
+    const el_sf = document.getElementById('dsf-'+id);
+    if(el_td) el_td.textContent = total;
+    const saldo = total <= 25 ? 90 : 0;
+    if(el_st) {
+      el_st.innerHTML = total > 25 ? '<span class="badge error">⛔ Interrompido</span>'
+                      : total >= 20 ? '<span class="badge warn">⚠️ Atenção</span>'
+                      : '<span class="badge ok">✅ OK</span>';
+    }
+    if(el_sl) el_sl.textContent = row.cert ? saldo : '—';
+    const sf = Math.max(0, saldo - (row.goz||0) - (row.pec||0));
+    if(el_sf) el_sf.textContent = row.cert ? sf : '—';
+  });
+}
+
+// ── TOTALS + PREVIEW ──────────────────────────────────────────────────────
+function computeTotals(sheet) {
+  const rows = state[sheet];
+  let totalBrutos=0, totalEfetivos=0, totalInj=0, totalAbo=0, totalMed=0, totalSau=0, totalSv=0;
+  let firstStart = null;
+
+  rows.forEach(row => {
+    const inicio = parseDate(row.inicio);
+    if (!inicio) return;
+    if (!firstStart || inicio < firstStart) firstStart = inicio;
+    const fim = parseDate(row.fim);
+    const end = fim || TODAY;
+    const brutos = Math.max(0, daysBetween(inicio, end) + 1);
+    const descs  = (row.inj||0)+(row.abo||0)+(row.med||0)+(row.sau||0)+(row.sv||0);
+    const efetivo= Math.max(0, brutos - descs);
+    totalBrutos   += brutos;
+    totalEfetivos += efetivo;
+    totalInj += (row.inj||0);
+    totalAbo += (row.abo||0);
+    totalMed += (row.med||0);
+    totalSau += (row.sau||0);
+    totalSv  += (row.sv||0);
+  });
+
+  // Faltas que contam no limite 25: abonadas + médica/atestado + lic.saúde DPME
+  // Faltas que INTERROMPEM: injustificadas + lic.s/vencimentos
+  return { totalBrutos, totalEfetivos, totalInj, totalAbo, totalMed, totalSau, totalSv,
+           totalDesc25: totalAbo + totalMed + totalSau,
+           firstStart, interruptions: totalInj + totalSv };
+}
+
+function recalc(tab) {
+  if (tab === 'info') return;
+  const T = computeTotals(tab);
+
+  // Update calc cells
+  updateCalcCells(tab);
+  updateDetailCalcs();
+
+  if (tab === 'lp') recalcLP(T);
+  else if (tab === 'qq') recalcQQ(T);
+  else if (tab === 'sp') recalcSP(T);
+}
+
+function recalcLP(T) {
+  const ef = T.totalEfetivos;
+  const blocos = Math.floor(ef / 1826);
+  const saldoBloco = ef % 1826;
+  const diasDisp = blocos * 90;
+  const faltasDesc = T.totalDesc25 % 25;  // abonadas + médicas + lic.saúde
+  const faltasRest = Math.max(0, 25 - faltasDesc);
+  const diasRest = ef === 0 ? 1826 : 1826 - saldoBloco;
+
+  // Set totals
+  setText('t-lp-ef', ef.toLocaleString('pt-BR'));
+  setText('t-lp-bl', blocos);
+  setText('t-lp-dp', diasDisp);
+  setText('t-lp-fd', faltasDesc);
+  setText('t-lp-fr', faltasRest);
+  setText('t-lp-int', T.interruptions);
+
+  // Prev cards
+  setText('p-lp-saldo', saldoBloco.toLocaleString('pt-BR'));
+  setText('p-lp-rest', diasRest.toLocaleString('pt-BR'));
+
+  if (T.firstStart) {
+    const nextData = addDays(T.firstStart, (blocos+1)*1826);
+    const daysLeft = Math.max(0, daysBetween(TODAY, nextData));
+    setText('p-lp-data', daysLeft === 0 ? '✅ Adquirido!' : fmtDate(nextData));
+    setText('p-lp-datasub', daysLeft === 0 ? 'Solicite a certidão na DE' : `${daysLeft.toLocaleString('pt-BR')} dias corridos restantes`);
+  } else {
+    setText('p-lp-data','—'); setText('p-lp-datasub','preencha os vínculos');
+  }
+
+  // Blocos table
+  let html = '';
+  for (let n=1; n<=10; n++) {
+    if (!T.firstStart) break;
+    const inicioBloco = addDays(T.firstStart, (n-1)*1826);
+    const fimBloco    = addDays(T.firstStart, n*1826);
+    const daysLeft    = Math.max(0, daysBetween(TODAY, fimBloco));
+    const acquired    = ef >= n*1826;
+    const active      = ef >= (n-1)*1826;
+    if (!active && !acquired && n > blocos+2) break;
+
+    let status, acao;
+    if (T.interruptions > 0 && !acquired) {
+      status = '<span class="badge error">⛔ Interrompido</span>';
+      acao = 'Revise os vínculos — crie novo a partir do retorno';
+    } else if (acquired) {
+      status = '<span class="badge done">✅ Adquirido</span>';
+      acao = 'Solicite a certidão na DE';
+    } else if (daysLeft === 0) {
+      status = '<span class="badge pending">🎯 Solicite!</span>';
+      acao = `Direito adquirido em ${fmtDate(fimBloco)} — solicite a certidão`;
+    } else if (saldoBloco > 1826*0.85 && n === blocos+1) {
+      status = '<span class="badge warn">⚠️ Quase lá!</span>';
+      acao = `Faltam ${daysLeft.toLocaleString('pt-BR')} dias`;
+    } else {
+      status = '<span class="badge ok">🔄 Andamento</span>';
+      acao = `Faltam ${daysLeft.toLocaleString('pt-BR')} dias corridos`;
+    }
+    html += `<tr>
+      <td><strong>${n}º Bloco</strong></td>
+      <td>${fmtDate(inicioBloco)}</td>
+      <td><strong>${fmtDate(fimBloco)}</strong></td>
+      <td>${acquired ? '—' : daysLeft.toLocaleString('pt-BR')}</td>
+      <td>${status}</td>
+      <td style="font-size:11px;text-align:left">${acao}</td>
+    </tr>`;
+  }
+  if (!html) html = '<tr><td colspan="6" style="text-align:center;color:var(--grey-600);padding:16px">Preencha os vínculos para ver as previsões</td></tr>';
+  document.getElementById('btb-lp').innerHTML = html;
+
+  // Status banner
+  updateStatusBanner('lp', T, ef, blocos);
+  buildLegenda('lp');
+}
+
+function recalcQQ(T) {
+  const ef = T.totalEfetivos;
+  const quinqs = Math.floor(ef / 1826);
+  const saldo = ef % 1826;
+  const pct = quinqs * 5;
+  const diasRest = ef === 0 ? 1826 : 1826 - saldo;
+  const totalDesc = T.totalDesc25;
+
+  setText('t-qq-ef', ef.toLocaleString('pt-BR'));
+  setText('t-qq-bl', quinqs);
+  setText('t-qq-pct', pct + '%');
+  setText('t-qq-rest', diasRest.toLocaleString('pt-BR'));
+  setText('t-qq-desc', totalDesc.toLocaleString('pt-BR'));
+  setText('t-qq-int', T.interruptions);
+
+  setText('p-qq-saldo', saldo.toLocaleString('pt-BR'));
+  setText('p-qq-rest', diasRest.toLocaleString('pt-BR'));
+
+  if (T.firstStart) {
+    const nextData = addDays(T.firstStart, (quinqs+1)*1826);
+    const daysLeft = Math.max(0, daysBetween(TODAY, nextData));
+    setText('p-qq-data', daysLeft === 0 ? '✅ Adquirido!' : fmtDate(nextData));
+    setText('p-qq-datasub', daysLeft === 0
+      ? `Solicite a concessão do ${quinqs+1}º ATS (${(quinqs+1)*5}%) na DE`
+      : `${daysLeft.toLocaleString('pt-BR')} dias corridos restantes`);
+  } else {
+    setText('p-qq-data','—'); setText('p-qq-datasub','preencha os vínculos');
+  }
+
+  let html = '';
+  for (let n=1; n<=12; n++) {
+    if (!T.firstStart) break;
+    const inicio = addDays(T.firstStart, (n-1)*1826);
+    const data   = addDays(T.firstStart, n*1826);
+    const daysLeft = Math.max(0, daysBetween(TODAY, data));
+    const acquired = ef >= n*1826;
+    const active   = ef >= (n-1)*1826;
+    if (!active && !acquired && n > quinqs+2) break;
+
+    let status, acao;
+    if (T.interruptions > 0 && !acquired) {
+      status = '<span class="badge error">⛔ Interrompido</span>';
+      acao = 'Crie novo vínculo a partir do retorno';
+    } else if (acquired) {
+      status = '<span class="badge done">✅ Concedido</span>';
+      acao = `ATS ${n}º — +${n*5}% no salário`;
+    } else if (daysLeft === 0) {
+      status = '<span class="badge pending">🎯 Solicite!</span>';
+      acao = `Solicite a concessão do ${n}º ATS (${n*5}%) na DE`;
+    } else {
+      status = '<span class="badge ok">🔄 Andamento</span>';
+      acao = `Faltam ${daysLeft.toLocaleString('pt-BR')} dias para o ${n}º ATS (${n*5}%)`;
+    }
+    html += `<tr>
+      <td><strong>${n}º</strong></td>
+      <td>${(n-1)*5+1}°–${n*5}° ano</td>
+      <td>${fmtDate(inicio)}</td>
+      <td><strong>${fmtDate(data)}</strong></td>
+      <td>${acquired ? '—' : daysLeft.toLocaleString('pt-BR')}</td>
+      <td><strong>${n*5}%</strong></td>
+      <td>${status}</td>
+      <td style="font-size:11px;text-align:left">${acao}</td>
+    </tr>`;
+  }
+  if (!html) html = '<tr><td colspan="8" style="text-align:center;color:var(--grey-600);padding:16px">Preencha os vínculos para ver as previsões</td></tr>';
+  document.getElementById('btb-qq').innerHTML = html;
+
+  updateStatusBanner('qq', T, ef, quinqs);
+  buildLegenda('qq');
+}
+
+function recalcSP(T) {
+  const DIAS_20_ANOS = 7305;
+  const ef = T.totalEfetivos;
+  const anos = (ef / 365.25).toFixed(2).replace('.',',');
+  const totalDesc = T.totalDesc25;
+  const rest = Math.max(0, DIAS_20_ANOS - ef);
+  const pct = Math.min(100, Math.round((ef / DIAS_20_ANOS) * 100));
+
+  setText('t-sp-ef', ef.toLocaleString('pt-BR'));
+  setText('t-sp-anos', anos);
+  setText('t-sp-rest', rest.toLocaleString('pt-BR'));
+  setText('t-sp-desc', totalDesc.toLocaleString('pt-BR'));
+  setText('t-sp-pct', pct + '%');
+
+  if (T.firstStart) {
+    const dataDir = addDays(T.firstStart, DIAS_20_ANOS);
+    const daysLeft = Math.max(0, daysBetween(TODAY, dataDir));
+    const acquired = TODAY >= dataDir;
+
+    setText('p-sp-adm', fmtDate(T.firstStart));
+    setText('p-sp-data', acquired ? '✅ Adquirido!' : fmtDate(dataDir));
+    setText('p-sp-rest', acquired ? '0' : daysLeft.toLocaleString('pt-BR'));
+    setText('p-sp-datasub', acquired
+      ? 'Solicite a concessão da Sexta Parte na DE!'
+      : `${daysLeft.toLocaleString('pt-BR')} dias corridos restantes`);
+
+    const impactEl = document.getElementById('sp-impact-msg');
+    if (totalDesc > 0) {
+      impactEl.innerHTML = `<div class="status-banner orange">
+        <div class="sb-icon">⚠️</div>
+        <div><div class="sb-title">Impacto dos afastamentos</div>
+        <div class="sb-text">${totalDesc} dia(s) de afastamentos descontáveis adiaram sua Sexta Parte em ${totalDesc} dia(s). Sem essas ausências, a data seria ${fmtDate(addDays(T.firstStart, DIAS_20_ANOS - totalDesc))}.</div></div>
+      </div>`;
+    } else {
+      impactEl.innerHTML = `<div class="status-banner green">
+        <div class="sb-icon">✅</div>
+        <div><div class="sb-title">Sem afastamentos descontáveis</div>
+        <div class="sb-text">Parabéns! Nenhum afastamento dedutível registrado — sua Sexta Parte não foi adiada.</div></div>
+      </div>`;
+    }
+
+    updateStatusBanner('sp', T, ef, ef >= DIAS_20_ANOS ? 1 : 0, true);
+  } else {
+    setText('p-sp-adm','—'); setText('p-sp-data','—');
+    setText('p-sp-rest','—'); setText('p-sp-datasub','preencha os vínculos');
+    document.getElementById('sp-impact-msg').innerHTML = '';
+  }
+
+  buildLegenda('sp');
+}
+
+function updateStatusBanner(sheet, T, ef, completed, isSP=false) {
+  const el = document.getElementById('status-'+sheet);
+  let type, icon, title, text;
+  const NEEDED = isSP ? 7305 : 1826;
+
+  if (!T.firstStart || ef === 0) {
+    type='purple'; icon='📋'; title='Aguardando dados';
+    text='Preencha pelo menos um vínculo com data de início para ver as previsões.';
+  } else if (T.interruptions > 0 && completed === 0) {
+    type='red'; icon='⛔'; title='Período interrompido';
+    text=`${T.interruptions} dia(s) de falta injustificada ou licença s/vencimentos detectados. Crie um novo vínculo a partir da data de retorno para reiniciar a contagem.`;
+  } else if (isSP && ef >= NEEDED) {
+    type='green'; icon='✅'; title='Sexta Parte adquirida!';
+    text='Você completou os 20 anos de efetivo exercício. Solicite a concessão na Diretoria de Ensino.';
+  } else if (!isSP && completed > 0) {
+    const next = addDays(T.firstStart, (completed+1)*1826);
+    const dl = Math.max(0, daysBetween(TODAY, next));
+    type='green'; icon='✅';
+    title=`${completed} bloco(s)/quinquênio(s) adquirido(s)`;
+    text=`Próximo direito em ${fmtDate(next)} (${dl.toLocaleString('pt-BR')} dias). Total: ${completed*(!isSP?90:1)} ${!isSP?'dias de LP':'quinquênios'} disponíveis.`;
+  } else {
+    const next = addDays(T.firstStart, (completed+1)*NEEDED);
+    const dl = Math.max(0, daysBetween(TODAY, next));
+    const prog = Math.round((ef % NEEDED) / NEEDED * 100);
+    type = prog >= 80 ? 'orange' : 'purple';
+    icon = prog >= 80 ? '⚠️' : '🔄';
+    title = `Em andamento — ${prog}% do período atual`;
+    text = `Próximo direito previsto para ${fmtDate(next)} (${dl.toLocaleString('pt-BR')} dias corridos).`;
+  }
+
+  el.className = `status-banner ${type}`;
+  el.innerHTML = `<div class="sb-icon">${icon}</div><div>
+    <div class="sb-title">${title}</div>
+    <div class="sb-text">${text}</div>
+  </div>`;
+}
+
+// ── LEGENDA ────────────────────────────────────────────────────────────────
+function buildLegenda(sheet) {
+  const id = 'leg-' + sheet;
+  document.getElementById(id).innerHTML = `
+    <div class="leg-item ok"><div class="leg-icon">✅</div><div><strong>Contam no limite de 25 dias — NÃO interrompem:</strong> Falta abonada (até 6/ano) · Falta médica/atestado · Licença Saúde DPME · Licença Saúde familiar</div></div>
+    <div class="leg-item stop"><div class="leg-icon">⛔</div><div><strong>INTERROMPEM</strong> (reinicia contagem do zero): Falta injustificada · Suspensão / Penalidade · Licença sem vencimentos · Afastamento eleitoral</div></div>
+    <div class="leg-item nocount"><div class="leg-icon">🟡</div><div><strong>NÃO entram no limite</strong> (efetivo exercício pleno): Férias · Lic. Maternidade · Acidente de trabalho · Lic. Prêmio · Casamento (8d) · Óbito familiar · Doação de sangue</div></div>
+    <div class="leg-item tip"><div class="leg-icon">💡</div><div><strong>Dica:</strong> Ao registrar falta injustificada ou Lic. s/Vencimentos, finalize o vínculo com essa data e crie um <strong>novo vínculo</strong> a partir do dia de retorno.</div></div>
+  `;
+}
+
+// ── MUTATIONS ──────────────────────────────────────────────────────────────
+function onVtChange(sheet, i, field, val) {
+  state[sheet][i][field] = val;
+  save();
+  recalc(sheet);
+}
+
+function onDetChange(sheet, i, field, val) {
+  state.lp_det[i][field] = val;
+  save();
+  updateDetailCalcs();
+}
+
+function addRow(sheet, render=true) {
+  state[sheet].push({inicio:'',fim:'',cargo:'',inj:0,abo:0,med:0,sau:0,sv:0});
+  save();
+  if (render) { renderVt(sheet); recalc(sheet); }
+}
+
+function delRow(sheet, i) {
+  if (state[sheet].length <= 1) return;
+  state[sheet].splice(i, 1);
+  save();
+  renderVt(sheet);
+  recalc(sheet);
+}
+
+function addDetailRow(sheet, render=true) {
+  state.lp_det.push({ini:'',fim:'',fab:0,fju:0,lsa:0,cert:'',goz:0,pec:0,obs:''});
+  save();
+  if (render) { renderDetailTable(); updateDetailCalcs(); }
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────────────
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+// ── EXPORT ─────────────────────────────────────────────────────────────────
+function exportCSV(sheet) {
+  const rows = state[sheet];
+  const headers = ['#','Inicio','Fim','Cargo','F.Injust','F.Abonada','F.Medica/Atestado','Lic.Saude DPME','Lic.sVenc','Dias Brutos','Dias Efetivos'];
+  const lines = [headers.join(';')];
+  rows.forEach((row, i) => {
+    const inicio = parseDate(row.inicio);
+    const fim    = parseDate(row.fim);
+    const end    = fim || TODAY;
+    const brutos = inicio ? Math.max(0, daysBetween(inicio, end)+1) : 0;
+    const descs  = (row.inj||0)+(row.abo||0)+(row.med||0)+(row.sau||0)+(row.sv||0);
+    lines.push([i+1,row.inicio||'',row.fim||'',row.cargo||'',
+                row.inj||0,row.abo||0,row.med||0,row.sau||0,row.sv||0,
+                brutos, Math.max(0,brutos-descs)].join(';'));
+  });
+  const blob = new Blob(['\uFEFF'+lines.join('\n')], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `vinculos_${sheet}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+function printSection(sheet) {
+  window.print();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+load();
+renderVt('lp');
+renderVt('qq');
+renderVt('sp');
+renderDetailTable();
+recalc('lp');
+</script>
+</body>
+</html>
