@@ -7,7 +7,7 @@ Funciona direto no navegador e salva os dados localmente.
 
 🚀 Acesso
 GitHub Pages:
-👉 https://<seu-usuario>.github.io/<nome-do-repositorio>
+👉 https://feliperib286.github.io/CONTROLE-DE-BENFICIOS-SEDUC-SP/
 
 ✨ Funcionalidades
 
