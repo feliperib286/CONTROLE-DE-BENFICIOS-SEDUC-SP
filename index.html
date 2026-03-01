@@ -951,7 +951,7 @@ function recalcLP(T) {
   const blocos = Math.floor(ef / 1826);
   const saldoBloco = ef % 1826;
   const diasDisp = blocos * 90;
-  const faltasDesc = T.totalDesc25 % 1000;  // Justificadas + médicas + lic.saúde
+  const faltasDesc = T.totalDesc25 % 25;  // Justificadas + médicas + lic.saúde
   const faltasRest = Math.max(0, 25 - faltasDesc);
   const diasRest = ef === 0 ? 1826 : 1826 - saldoBloco;
 
