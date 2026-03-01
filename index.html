@@ -569,7 +569,7 @@ body {
         <div class="tot-card gold"><div class="tot-label">Quinquênios Completos</div><div class="tot-value" id="t-qq-bl">0</div><div class="tot-sub">ATS adquiridos</div></div>
         <div class="tot-card teal"><div class="tot-label">% ATS Acumulado</div><div class="tot-value" id="t-qq-pct">0%</div><div class="tot-sub">Acréscimo no salário</div></div>
         <div class="tot-card purple"><div class="tot-label">Dias Restantes</div><div class="tot-value" id="t-qq-rest">—</div><div class="tot-sub">Para o próximo ATS</div></div>
-        <div class="tot-card orange"><div class="tot-label">Descontos Acum.</div><div class="tot-value" id="t-qq-desc">0</div><div class="tot-sub">Abon.+Médica+Lic.Saúde</div></div>
+        <div class="tot-card orange"><div class="tot-label">Descontos Acum.</div><div class="tot-value" id="t-qq-desc">0</div><div class="tot-sub">Just.+Médica+Lic.Saúde</div></div>
         <div class="tot-card red"><div class="tot-label">Interrupções</div><div class="tot-value" id="t-qq-int">0</div><div class="tot-sub">F.Injust. + Lic.s/Venc.</div></div>
       </div>
     </div>
@@ -920,7 +920,7 @@ function computeTotals(sheet) {
     totalBrutos   += brutos;
     totalEfetivos += efetivo;
     totalInj += (row.inj||0);
-    totalAbo += (row.abo||0);
+    totalJu += (row.abo||0);
     totalMed += (row.med||0);
     totalSau += (row.sau||0);
     totalSv  += (row.sv||0);
@@ -928,8 +928,8 @@ function computeTotals(sheet) {
 
   // Faltas que contam no limite 25: Justificadas + médica/atestado + lic.saúde DPME
   // Faltas que INTERROMPEM: injustificadas + lic.s/vencimentos
-  return { totalBrutos, totalEfetivos, totalInj, totalAbo, totalMed, totalSau, totalSv,
-           totalDesc25: totalAbo + totalMed + totalSau,
+  return { totalBrutos, totalEfetivos, totalInj, totalJu, totalMed, totalSau, totalSv,
+           totalDesc25: totalJu + totalMed + totalSau,
            firstStart, interruptions: totalInj + totalSv };
 }
 
@@ -951,7 +951,7 @@ function recalcLP(T) {
   const blocos = Math.floor(ef / 1826);
   const saldoBloco = ef % 1826;
   const diasDisp = blocos * 90;
-  const faltasDesc = T.totalDesc25 % 25;  // Justificadas + médicas + lic.saúde
+  const faltasDesc = T.totalDesc25 % 1000;  // Justificadas + médicas + lic.saúde
   const faltasRest = Math.max(0, 25 - faltasDesc);
   const diasRest = ef === 0 ? 1826 : 1826 - saldoBloco;
 
