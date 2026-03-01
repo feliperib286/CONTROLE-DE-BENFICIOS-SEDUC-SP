@@ -323,13 +323,22 @@ body {
 .c-stop { color:var(--red); font-weight:600; }
 .c-warn { color:var(--orange); font-weight:600; }
 
-/* ── RODAPÉ ── */
-  .main-footer {
-    background: linear-gradient(145deg, #1a1a1a, #0d0d0d); /* Fundo escuro elegante */
-    border-top: 2px solid #28a745; /* Uma linha verde (cor de sucesso/folha de pagamento) */
-    padding: 25px 0;
-    color: #f8f9fa;
-}
+
+        /* RODAPÉ PROFISSIONAL */
+        .main-footer { 
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d); 
+            border-top: 3px solid #28a745; 
+            padding: 40px 20px; 
+            color: #f8f9fa; 
+            text-align: center; 
+            margin-top: 50px;
+        }
+        .footer-content p { margin-bottom: 10px; font-size: 14px; color: #bbb; }
+        .author-name { color: #28a745; font-weight: bold; }
+        .footer-links { margin: 20px 0; }
+        .footer-links a { color: white; text-decoration: none; margin: 0 15px; font-size: 14px; transition: 0.3s; }
+        .footer-links a:hover { color: #28a745; }
+        .footer-bottom { font-size: 12px; color: #666; letter-spacing: 1px; }
 
 /* ── PRINT ── */
 .btn-export {
@@ -1255,7 +1264,8 @@ renderVt('sp');
 renderDetailTable();
 recalc('lp');
 </script>
-    <footer class="main-footer">
+   
+<footer class="main-footer">
     <div class="footer-content">
         <p><strong>PROJETO ESCOLA System v3.0</strong> | Controle de Benefícios SEDUC-SP</p>
         <p>Desenvolvido por <span class="author-name">Felipe Ribeiro</span></p>
@@ -1274,5 +1284,6 @@ recalc('lp');
         &copy; 2026 | Engenharia de Produção & Software
     </div>
 </footer>
+
 </body>
 </html>
