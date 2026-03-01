@@ -438,7 +438,7 @@ body {
             <th>Fim (branco=ativo)</th>
             <th>Cargo / Categoria</th>
             <th data-tip="⛔ INTERROMPE o período — reinicia do zero">F.Injust.</th>
-            <th data-tip="Conta nas 25 faltas — não interrompe (até 6/ano)">F.Abonada</th>
+            <th data-tip="Conta nas 25 faltas — não interrompe (até 6/ano)">F.Justificada</th>
             <th data-tip="Conta nas 25 faltas — não interrompe (atestado médico)">F.Médica / Atestado</th>
             <th data-tip="Conta nas 25 faltas — não interrompe (perícia DPME)">Lic.Saúde DPME</th>
             <th data-tip="⛔ INTERROMPE o período — reinicia do zero">Lic.s/Venc.</th>
@@ -461,7 +461,7 @@ body {
         <div class="tot-card green"><div class="tot-label">Dias Efetivos</div><div class="tot-value" id="t-lp-ef">0</div><div class="tot-sub">Total acumulado</div></div>
         <div class="tot-card gold"><div class="tot-label">Blocos Completos</div><div class="tot-value" id="t-lp-bl">0</div><div class="tot-sub">Direitos adquiridos (×90 dias)</div></div>
         <div class="tot-card teal"><div class="tot-label">Dias LP Disponíveis</div><div class="tot-value" id="t-lp-dp">0</div><div class="tot-sub">Blocos × 90 dias</div></div>
-        <div class="tot-card orange"><div class="tot-label">Faltas Desc. no bloco atual</div><div class="tot-value" id="t-lp-fd">0</div><div class="tot-sub">Limite: 25 dias (abonada+médica+saúde)</div></div>
+        <div class="tot-card orange"><div class="tot-label">Faltas Desc. no bloco atual</div><div class="tot-value" id="t-lp-fd">0</div><div class="tot-sub">Limite: 25 dias (Justificada+médica+saúde)</div></div>
         <div class="tot-card purple"><div class="tot-label">Faltas Restantes</div><div class="tot-value" id="t-lp-fr">25</div><div class="tot-sub">Até estourar o limite</div></div>
         <div class="tot-card red"><div class="tot-label">Interrupções</div><div class="tot-value" id="t-lp-int">0</div><div class="tot-sub">F.Injust. + Lic.s/Venc.</div></div>
       </div>
@@ -510,7 +510,7 @@ body {
         <table class="vt" id="dt-lp">
           <thead><tr>
             <th>#</th><th>Início Bloco</th><th>Fim Bloco</th>
-            <th>F.Abonada</th><th>F.Justif.</th><th>Lic.Saúde</th>
+            <th>F.Justificada</th><th>F.Justif.</th><th>Lic.Saúde</th>
             <th>Total Desc.</th><th>Status</th><th>Certidão (DO)</th>
             <th>Saldo</th><th>Gozado</th><th>Pecúnia</th><th>Saldo Final</th><th>Obs</th>
           </tr></thead>
@@ -550,7 +550,7 @@ body {
         <table class="vt" id="vt-qq">
           <thead><tr>
             <th>#</th><th>Início</th><th>Fim (branco=ativo)</th><th>Cargo / Categoria</th>
-            <th>F.Injust.</th><th>F.Abonada</th><th>F.Médica / Atestado</th>
+            <th>F.Injust.</th><th>F.Justificada</th><th>F.Médica / Atestado</th>
             <th>Lic.Saúde DPME</th><th>Lic.s/Venc.</th>
             <th>Dias Brutos</th><th>Dias Efetivos</th><th></th>
           </tr></thead>
@@ -636,7 +636,7 @@ body {
         <table class="vt" id="vt-sp">
           <thead><tr>
             <th>#</th><th>Início</th><th>Fim (branco=ativo)</th><th>Cargo / Categoria</th>
-            <th>F.Injust.</th><th>F.Abonada</th><th>F.Médica / Atestado</th>
+            <th>F.Injust.</th><th>F.Justificada</th><th>F.Médica / Atestado</th>
             <th>Lic.Saúde DPME</th><th>Lic.s/Venc.</th>
             <th>Dias Brutos</th><th>Dias Efetivos</th><th></th>
           </tr></thead>
@@ -716,13 +716,13 @@ body {
         <tbody>
           <tr><td><strong>Atestado médico entregue no dia</strong></td><td class="new c-ok">✅ Não conta no limite de 30d</td><td class="old c-warn">⚠️ Conta como falta justificada</td></tr>
           <tr><td><strong>Falta injustificada</strong></td><td class="new c-stop">⛔ INTERROMPE o período quinquenal</td><td class="old c-stop">⛔ INTERROMPE o período quinquenal</td></tr>
-          <tr><td><strong>Falta abonada (até 6/ano)</strong></td><td class="new c-ok">✅ Não interrompe — entra no limite de 25d</td><td class="old c-ok">✅ Não interrompe — entra no limite de 25d</td></tr>
+          <tr><td><strong>Falta Justificada (até 6/ano)</strong></td><td class="new c-ok">✅ Não interrompe — entra no limite de 25d</td><td class="old c-ok">✅ Não interrompe — entra no limite de 25d</td></tr>
           <tr><td><strong>Licença para tratamento de saúde</strong></td><td class="new c-warn">⚠️ Conta no limite de 25 dias</td><td class="old c-warn">⚠️ Conta no limite de 30 dias</td></tr>
           <tr><td><strong>Licença sem vencimentos</strong></td><td class="new c-stop">⛔ INTERROMPE o período</td><td class="old c-stop">⛔ INTERROMPE o período</td></tr>
           <tr><td><strong>Suspensão / penalidade</strong></td><td class="new c-stop">⛔ INTERROMPE o período</td><td class="old c-stop">⛔ INTERROMPE o período</td></tr>
           <tr><td><strong>Férias / Lic. Maternidade / Acidente</strong></td><td class="new c-ok">✅ Efetivo exercício — não conta</td><td class="old c-ok">✅ Efetivo exercício — não conta</td></tr>
           <tr><td><strong>Período pandemia (mai/2020–dez/2021)</strong></td><td class="new c-stop">Não computa (salvo decisão judicial)</td><td class="old">N/A</td></tr>
-          <tr><td><strong>Limite faltas descontáveis (LP)</strong></td><td class="new"><strong>25 dias</strong> (abonada + médica + lic.saúde DPME)</td><td class="old">30 dias (incluía falta justificada)</td></tr>
+          <tr><td><strong>Limite faltas descontáveis (LP)</strong></td><td class="new"><strong>25 dias</strong> (Justificada + médica + lic.saúde DPME)</td><td class="old">30 dias (incluía falta justificada)</td></tr>
        
         </tbody>
         
@@ -738,7 +738,7 @@ body {
         <li><strong>Quinquênio (ATS):</strong> Art. 129 do Estatuto do Magistério (CE-SP)</li>
         <li><strong>Sexta Parte:</strong> Art. 129 CE-SP | vedado efeito cascata com ATS</li>
         <li><strong>Faltas descontáveis (LP):</strong> Res. SE 89/2005 | LC 1374/2022 | Res. SEDUC 97/2025 — <strong>limite: 25 dias</strong> por quinquênio</li>
-        <li><strong>Faltas abonadas:</strong> Art. 110 §1º Lei nº 10.261/68 (até 6/ano)</li>
+        <li><strong>Faltas Justificadas:</strong> Art. 110 §1º Lei nº 10.261/68 (até 6/ano)</li>
         <li><strong>Licença s/ vencimentos:</strong> Art. 202 Lei nº 10.261/68</li>
       </ul>
     </div>
@@ -926,7 +926,7 @@ function computeTotals(sheet) {
     totalSv  += (row.sv||0);
   });
 
-  // Faltas que contam no limite 25: abonadas + médica/atestado + lic.saúde DPME
+  // Faltas que contam no limite 25: Justificadas + médica/atestado + lic.saúde DPME
   // Faltas que INTERROMPEM: injustificadas + lic.s/vencimentos
   return { totalBrutos, totalEfetivos, totalInj, totalAbo, totalMed, totalSau, totalSv,
            totalDesc25: totalAbo + totalMed + totalSau,
@@ -951,7 +951,7 @@ function recalcLP(T) {
   const blocos = Math.floor(ef / 1826);
   const saldoBloco = ef % 1826;
   const diasDisp = blocos * 90;
-  const faltasDesc = T.totalDesc25 % 25;  // abonadas + médicas + lic.saúde
+  const faltasDesc = T.totalDesc25 % 25;  // Justificadas + médicas + lic.saúde
   const faltasRest = Math.max(0, 25 - faltasDesc);
   const diasRest = ef === 0 ? 1826 : 1826 - saldoBloco;
 
@@ -1184,7 +1184,7 @@ function updateStatusBanner(sheet, T, ef, completed, isSP=false) {
 function buildLegenda(sheet) {
   const id = 'leg-' + sheet;
   document.getElementById(id).innerHTML = `
-    <div class="leg-item ok"><div class="leg-icon">✅</div><div><strong>Contam no limite de 25 dias — NÃO interrompem:</strong> Falta abonada (até 6/ano) · Falta médica/atestado · Licença Saúde DPME · Licença Saúde familiar</div></div>
+    <div class="leg-item ok"><div class="leg-icon">✅</div><div><strong>Contam no limite de 25 dias — NÃO interrompem:</strong> Falta Justificada (até 6/ano) · Falta médica/atestado · Licença Saúde DPME · Licença Saúde familiar</div></div>
     <div class="leg-item stop"><div class="leg-icon">⛔</div><div><strong>INTERROMPEM</strong> (reinicia contagem do zero): Falta injustificada · Suspensão / Penalidade · Licença sem vencimentos · Afastamento eleitoral</div></div>
     <div class="leg-item nocount"><div class="leg-icon">🟡</div><div><strong>NÃO entram no limite</strong> (efetivo exercício pleno): Férias · Lic. Maternidade · Acidente de trabalho · Lic. Prêmio · Casamento (8d) · Óbito familiar · Doação de sangue</div></div>
     <div class="leg-item tip"><div class="leg-icon">💡</div><div><strong>Dica:</strong> Ao registrar falta injustificada ou Lic. s/Vencimentos, finalize o vínculo com essa data e crie um <strong>novo vínculo</strong> a partir do dia de retorno.</div></div>
@@ -1233,7 +1233,7 @@ function setText(id, val) {
 // ── EXPORT ─────────────────────────────────────────────────────────────────
 function exportCSV(sheet) {
   const rows = state[sheet];
-  const headers = ['#','Inicio','Fim','Cargo','F.Injust','F.Abonada','F.Medica/Atestado','Lic.Saude DPME','Lic.sVenc','Dias Brutos','Dias Efetivos'];
+  const headers = ['#','Inicio','Fim','Cargo','F.Injust','F.Justificada','F.Medica/Atestado','Lic.Saude DPME','Lic.sVenc','Dias Brutos','Dias Efetivos'];
   const lines = [headers.join(';')];
   rows.forEach((row, i) => {
     const inicio = parseDate(row.inicio);
