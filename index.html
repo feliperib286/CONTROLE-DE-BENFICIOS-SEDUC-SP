@@ -3,241 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Benefícios SEDUC - Felipe Ribeiro</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Controle de Benefícios SEDUC - Projeção Ativa</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy: #0f2744; --navy-mid: #1a3a5c; --navy-light: #2e5f8a;
-            --gold: #e8a020; --gold-light: #fff3d0;
-            --teal: #0d6e6e; --teal-light: #d0f0ee;
-            --green: #1a6b3a; --green-light: #d4edda;
-            --red: #9c0006; --red-light: #ffc7ce;
-            --grey-100: #f7f8fa; --grey-200: #eef0f4; --grey-300: #d4d8e0;
-            --grey-900: #111827; --white: #ffffff;
-            --radius: 10px; --shadow: 0 4px 24px rgba(15,39,68,.10);
-            --font-display: 'DM Serif Display', Georgia, serif;
-            --font-body: 'DM Sans', system-ui, sans-serif;
+            --navy: #0f2744; --teal: #0d6e6e; --gold: #e8a020;
+            --red: #9c0006; --green: #1a6b3a; --white: #ffffff;
+            --grey-100: #f7f8fa; --grey-300: #d4d8e0;
         }
-
-        body { font-family: var(--font-body); background: var(--grey-100); color: var(--grey-900); margin: 0; }
-        .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%); padding: 40px 20px; color: white; text-align: center; }
-        .hero h1 { font-family: var(--font-display); font-size: 32px; margin: 0; }
-        
-        .nav-wrap { background: var(--navy); position: sticky; top: 0; z-index: 100; display: flex; justify-content: center; }
-        .nav-tab { padding: 15px 20px; color: rgba(255,255,255,0.7); cursor: pointer; border: none; background: none; font-weight: 600; border-bottom: 3px solid transparent; }
-        .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
-
+        body { font-family: 'DM Sans', sans-serif; background: var(--grey-100); margin: 0; color: #333; }
+        .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%); padding: 30px; color: white; text-align: center; }
         .main { max-width: 1100px; margin: 20px auto; padding: 0 20px; }
-        .card { background: white; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; }
+        
+        .card { background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px; overflow: hidden; }
         .card-header { padding: 15px 20px; background: var(--navy); color: white; display: flex; justify-content: space-between; align-items: center; }
-        .card-header h2 { font-family: var(--font-display); font-size: 18px; margin: 0; }
         .card-body { padding: 20px; }
 
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th { background: var(--grey-200); padding: 10px; border: 1px solid var(--grey-300); text-align: center; }
+        th { background: #f0f2f5; padding: 12px; border: 1px solid var(--grey-300); }
         td { padding: 8px; border: 1px solid var(--grey-300); text-align: center; }
-        
-        input { width: 100%; padding: 5px; border: 1px solid var(--grey-300); border-radius: 4px; box-sizing: border-box; text-align: center; }
-        .interrupcao-row td { background: #fff0f0 !important; }
-        
-        .totais-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 15px; }
-        .tot-card { padding: 15px; border-radius: 8px; border-left: 4px solid var(--navy); background: var(--grey-100); }
-        .tot-label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; }
-        .tot-value { font-size: 24px; font-family: var(--font-display); color: var(--navy); }
+        input { width: 100%; padding: 6px; border: 1px solid var(--grey-300); border-radius: 4px; text-align: center; }
 
-        .status-banner { padding: 15px; border-radius: 8px; margin-bottom: 15px; display: flex; gap: 15px; align-items: center; }
-        .status-banner.red { background: var(--red-light); border: 1px solid #f5a5a9; color: var(--red); }
-        .status-banner.green { background: var(--green-light); border: 1px solid #a8d5b5; color: var(--green); }
-        .status-banner.orange { background: var(--gold-light); border: 1px solid #ffd66e; color: #8a5c00; }
+        .totais-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .tot-card { padding: 20px; border-radius: 8px; background: white; border-bottom: 4px solid var(--navy); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .tot-label { font-size: 12px; font-weight: bold; color: #666; text-transform: uppercase; }
+        .tot-value { font-size: 26px; font-weight: 700; color: var(--navy); margin-top: 5px; }
 
-        .btn { padding: 10px 15px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .status-banner { padding: 15px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-weight: 500; }
+        .status-banner.red { background: #ffebee; color: var(--red); border: 1px solid var(--red); }
+        .status-banner.green { background: #e8f5e9; color: var(--green); border: 1px solid var(--green); }
+
+        .btn { padding: 10px 15px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; }
         .btn-add { background: var(--teal); color: white; }
-        .btn-grade { background: var(--gold); color: white; }
-        .btn-del { background: none; color: var(--red); border: 1px solid var(--red); padding: 2px 8px; }
-
-        footer { text-align: center; padding: 30px; color: #666; font-size: 12px; }
+        .btn-grade { background: var(--gold); color: white; margin-right: 10px; }
+        
+        .alert-row td { background-color: #fff5f5 !important; color: var(--red); }
+        .projection-box { background: var(--navy); color: white; padding: 20px; border-radius: 8px; text-align: center; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <div class="hero">
     <h1>Controle de Benefícios SEDUC-SP</h1>
-    <p>Gestão de Licença Prêmio, Quinquênio e Sexta Parte</p>
+    <p>Calculadora de Licença Prêmio com Projeção de Datas</p>
 </div>
 
-<div class="nav-wrap">
-    <button class="nav-tab active" onclick="setTab('lp')">🏅 Licença Prêmio</button>
-    <button class="nav-tab" onclick="setTab('qq')">📅 Quinquênio / Sexta Parte</button>
-</div>
+<div class="main">
+    <div id="banner-status" class="status-banner green">✅ Sistema pronto para cálculos.</div>
 
-<main class="main">
-    <div id="status-lp" class="status-banner green">
-        <div>💡</div>
-        <div>
-            <div class="sb-title">Sistema Online</div>
-            <div class="sb-text">Insira os períodos para calcular os blocos.</div>
-        </div>
+    <div class="totais-grid">
+        <div class="tot-card"><div class="tot-label">Dias Efetivos Totais</div><div class="tot-value" id="res-efetivo">0</div></div>
+        <div class="tot-card"><div class="tot-label">Blocos Adquiridos</div><div class="tot-value" id="res-blocos">0</div></div>
+        <div class="tot-card"><div class="tot-label">Dias Restantes (Próximo)</div><div class="tot-value" id="res-restante">1826</div></div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <h2>Vínculos de Exercício (Licença Prêmio)</h2>
+            <h2>Lançamento de Vínculos</h2>
             <div>
-                <button class="btn btn-grade" onclick="gerarGradeAnualLP()">📅 Gerar Grade 6 Anos</button>
-                <button class="btn btn-add" onclick="addRow('lp')">+ Novo Vínculo</button>
+                <button class="btn btn-grade" onclick="gerarGrade()">📅 Gerar Grade 6 Anos</button>
+                <button class="btn btn-add" onclick="addRow()">+ Novo Ano</button>
             </div>
         </div>
         <div class="card-body">
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Início</th>
-                            <th>Fim</th>
-                            <th>F. Injust. (Interr.)</th>
-                            <th>F. Justif.</th>
-                            <th>F. Médica</th>
-                            <th>Lic. Saúde</th>
-                            <th>Abonada (Até 10/21)</th>
-                            <th>Limite</th>
-                            <th>Efetivo</th>
-                            <th>Ação</th>
-                        </tr>
-                    </thead>
-                    <tbody id="vtb-lp"></tbody>
-                </table>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Início</th>
+                        <th>Fim</th>
+                        <th>F. Justif.</th>
+                        <th>F. Médica</th>
+                        <th>Lic. Saúde</th>
+                        <th>Abonada (Até 10/21)</th>
+                        <th>F. Injust.</th>
+                        <th>Efetivo</th>
+                        <th>Limite</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-corpo"></tbody>
+            </table>
         </div>
     </div>
 
-    <div class="totais-grid">
-        <div class="tot-card"><div class="tot-label">Dias Efetivos</div><div class="tot-value" id="t-lp-ef">0</div></div>
-        <div class="tot-card"><div class="tot-label">Blocos Válidos</div><div class="tot-value" id="t-lp-bl">0</div></div>
-        <div class="tot-card"><div class="tot-label">Faltas no Bloco</div><div class="tot-value" id="t-lp-fd">0</div></div>
-        <div class="tot-card"><div class="tot-label">Saldo LP (Dias)</div><div class="tot-value" id="t-lp-dp">0</div></div>
+    <div class="projection-box">
+        <h3 style="margin: 0; font-size: 14px; text-transform: uppercase; opacity: 0.8;">Previsão do Próximo Bloco</h3>
+        <div id="res-data-previsao" style="font-size: 32px; font-weight: bold; margin: 10px 0;">-- / -- / ----</div>
+        <div id="res-obs-previsao">Insira as datas para projetar o direito.</div>
     </div>
-</main>
-
-<footer>
-    Desenvolvido por Felipe Ribeiro | Gerente de Organização Escolar (GOE) &copy; 2026
-</footer>
+</div>
 
 <script>
-    const DATA_CORTE = new Date('2021-11-01T00:00:00');
-    const TODAY = new Date();
-    let state = { lp: [] };
+    const CORTE_LEI = new Date('2021-11-01');
+    const DIAS_BLOCO = 1826;
+    let dados = JSON.parse(localStorage.getItem('seduc_felipe_v3')) || [];
 
-    function save() { localStorage.setItem('seduc_data_felipe', JSON.stringify(state)); }
-    function load() {
-        const d = localStorage.getItem('seduc_data_felipe');
-        if(d) state = JSON.parse(d);
-        if(state.lp.length === 0) addRow('lp');
-        renderVt();
+    function save() { localStorage.setItem('seduc_felipe_v3', JSON.stringify(dados)); calcular(); }
+
+    function addRow() {
+        dados.push({ ini: '', fim: '', fj: 0, fm: 0, ls: 0, ab: 0, fi: 0 });
+        render();
     }
 
-    function parseDate(s) {
-        if(!s) return null;
-        const parts = s.split('/');
-        return new Date(parts[2], parts[1]-1, parts[0]);
-    }
-
-    function daysBetween(a, b) { return Math.round((b - a) / 86400000); }
-
-    function addRow(sheet) {
-        state.lp.push({ inicio:'', fim:'', inj:0, abo:0, med:0, sau:0, abon:0 });
-        renderVt();
-    }
-
-    function delRow(i) {
-        state.lp.splice(i, 1);
-        save();
-        renderVt();
-    }
-
-    function gerarGradeAnualLP() {
-        if(!confirm("Deseja gerar a grade automática de 6 anos? Isso limpará os dados atuais.")) return;
-        state.lp = [];
+    function gerarGrade() {
+        dados = [];
         const anoAtu = new Date().getFullYear();
         for(let i=5; i>=0; i--) {
-            const ano = anoAtu - i;
-            state.lp.push({ inicio: `01/01/${ano}`, fim: `31/12/${ano}`, inj:0, abo:0, med:0, sau:0, abon:0 });
+            dados.push({ ini: `01/01/${anoAtu-i}`, fim: `31/12/${anoAtu-i}`, fj: 0, fm: 0, ls: 0, ab: 0, fi: 0 });
         }
-        renderVt();
+        render();
     }
 
-    function onCh(i, field, val) {
-        state.lp[i][field] = val;
-        save();
-        renderVt();
+    function parseData(str) {
+        if(!str) return null;
+        const p = str.split('/');
+        return new Date(p[2], p[1]-1, p[0]);
     }
 
-    function renderVt() {
-        const tb = document.getElementById('vtb-lp');
-        tb.innerHTML = '';
-        
+    function calcular() {
         let totalEfetivo = 0;
-        let totalFaltasBloco = 0;
-        let blocosPerdidos = 0;
+        let dataReferencia = null;
+        let erroFaltas = false;
 
-        state.lp.forEach((row, i) => {
-            const ini = parseDate(row.inicio);
-            const fim = parseDate(row.fim) || TODAY;
-            
-            // Regra de Limite Dinâmico
-            const isRegraAntiga = fim < DATA_CORTE;
-            const limite = isRegraAntiga ? 30 : 25;
-            
-            // Soma de faltas que descontam no limite
-            const abonadaEfetiva = isRegraAntiga ? (Number(row.abon) || 0) : 0;
-            const faltasContam = (Number(row.abo)||0) + (Number(row.med)||0) + (Number(row.sau)||0) + abonadaEfetiva;
-            
-            const brutos = ini ? daysBetween(ini, fim) + 1 : 0;
-            const efetivo = Math.max(0, brutos - (faltasContam + (Number(row.inj)||0)));
-            
-            totalEfetivo += efetivo;
-            totalFaltasBloco += faltasContam;
+        dados.forEach((d, idx) => {
+            const inicio = parseData(d.ini);
+            const fim = parseData(d.fim) || new Date();
+            if(!dataReferencia && inicio) dataReferencia = inicio;
 
-            const isInterrompido = (Number(row.inj) > 0) || (faltasContam > limite);
-            if(isInterrompido) blocosPerdidos++;
-
-            const tr = document.createElement('tr');
-            if(isInterrompido) tr.className = 'interrupcao-row';
-            
-            tr.innerHTML = `
-                <td><input value="${row.inicio}" onchange="onCh(${i},'inicio',this.value)"></td>
-                <td><input value="${row.fim}" onchange="onCh(${i},'fim',this.value)"></td>
-                <td><input type="number" value="${row.inj}" onchange="onCh(${i},'inj',this.value)"></td>
-                <td><input type="number" value="${row.abo}" onchange="onCh(${i},'abo',this.value)"></td>
-                <td><input type="number" value="${row.med}" onchange="onCh(${i},'med',this.value)"></td>
-                <td><input type="number" value="${row.sau}" onchange="onCh(${i},'sau',this.value)"></td>
-                <td><input type="number" value="${row.abon}" ${isRegraAntiga ? '' : 'disabled style="background:#eee"'} onchange="onCh(${i},'abon',this.value)"></td>
-                <td style="font-weight:bold; color:${faltasContam > limite ? 'red' : 'green'}">${limite}d</td>
-                <td>${efetivo}</td>
-                <td><button class="btn-del" onclick="delRow(${i})">✕</button></td>
-            `;
-            tb.appendChild(tr);
+            if(inicio) {
+                const isAntigo = fim < CORTE_LEI;
+                const limite = isAntigo ? 30 : 25;
+                const abonada = isAntigo ? Number(d.ab) : 0;
+                
+                const faltasContam = Number(d.fj) + Number(d.fm) + Number(d.ls) + abonada;
+                const faltasInterrompem = Number(d.fi);
+                
+                const brutos = Math.round((fim - inicio) / 86400000) + 1;
+                const liq = brutos - (faltasContam + faltasInterrompem);
+                
+                totalEfetivo += liq;
+                
+                // Se estourou, marcamos mas não paramos o cálculo
+                if(faltasContam > limite || faltasInterrompem > 0) erroFaltas = true;
+                
+                document.getElementById(`efetivo-${idx}`).innerText = liq;
+                document.getElementById(`limite-${idx}`).innerText = limite + 'd';
+                document.getElementById(`row-${idx}`).className = (faltasContam > limite || faltasInterrompem > 0) ? 'alert-row' : '';
+            }
         });
 
-        // Totais Finais
-        const nBlocos = Math.floor(totalEfetivo / 1826);
-        const blocosFinais = Math.max(0, nBlocos - blocosPerdidos);
+        const blocosCompletos = Math.floor(totalEfetivo / DIAS_BLOCO);
+        const diasRestantes = DIAS_BLOCO - (totalEfetivo % DIAS_BLOCO);
 
-        document.getElementById('t-lp-ef').innerText = totalEfetivo;
-        document.getElementById('t-lp-bl').innerText = blocosFinais;
-        document.getElementById('t-lp-fd').innerText = totalFaltasBloco;
-        document.getElementById('t-lp-dp').innerText = blocosFinais * 90;
+        document.getElementById('res-efetivo').innerText = totalEfetivo;
+        document.getElementById('res-blocos').innerText = blocosCompletos;
+        document.getElementById('res-restante').innerText = diasRestantes;
 
-        const banner = document.getElementById('status-lp');
-        if(blocosPerdidos > 0) {
-            banner.className = "status-banner orange";
-            banner.innerHTML = `<div>⚠️</div><div><b>Atenção:</b> Blocos foram comprometidos por excesso de faltas ou falta injustificada.</div>`;
+        // Projeção de Data
+        if(dataReferencia) {
+            const dataProj = new Date();
+            dataProj.setDate(dataProj.getDate() + diasRestantes);
+            
+            document.getElementById('res-data-previsao').innerText = dataProj.toLocaleDateString('pt-BR');
+            document.getElementById('res-obs-previsao').innerText = erroFaltas 
+                ? "⚠️ Atenção: Períodos com excesso de faltas adiam a data final." 
+                : "Calendário estimado com base no fluxo atual.";
+        }
+
+        const banner = document.getElementById('banner-status');
+        if(erroFaltas) {
+            banner.className = "status-banner red";
+            banner.innerText = "⚠️ Existem períodos que excedem o limite de 25/30 faltas ou possuem falta injustificada.";
         } else {
             banner.className = "status-banner green";
-            banner.innerHTML = `<div>✅</div><div><b>Tudo em ordem:</b> O tempo está sendo computado normalmente.</div>`;
+            banner.innerText = "✅ Todos os períodos estão dentro do limite legal.";
         }
     }
 
-    load();
+    function render() {
+        const corpo = document.getElementById('tabela-corpo');
+        corpo.innerHTML = '';
+        dados.forEach((d, i) => {
+            corpo.innerHTML += `
+                <tr id="row-${i}">
+                    <td><input value="${d.ini}" onchange="dados[${i}].ini=this.value; save()"></td>
+                    <td><input value="${d.fim}" onchange="dados[${i}].fim=this.value; save()"></td>
+                    <td><input type="number" value="${d.fj}" onchange="dados[${i}].fj=this.value; save()"></td>
+                    <td><input type="number" value="${d.fm}" onchange="dados[${i}].fm=this.value; save()"></td>
+                    <td><input type="number" value="${d.ls}" onchange="dados[${i}].ls=this.value; save()"></td>
+                    <td><input type="number" value="${d.ab}" onchange="dados[${i}].ab=this.value; save()"></td>
+                    <td><input type="number" value="${d.fi}" onchange="dados[${i}].fi=this.value; save()"></td>
+                    <td id="efetivo-${i}" style="font-weight:bold">0</td>
+                    <td id="limite-${i}" style="font-size:11px">25d</td>
+                </tr>
+            `;
+        });
+        calcular();
+    }
+
+    render();
 </script>
 </body>
 </html>
