@@ -3,27 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Benefícios SEDUC - Projeção Ativa</title>
+    <title>Sistema de Gestão SEDUC - Felipe Ribeiro</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --navy: #0f2744; --teal: #0d6e6e; --gold: #e8a020;
             --red: #9c0006; --green: #1a6b3a; --white: #ffffff;
-            --grey-100: #f7f8fa; --grey-300: #d4d8e0;
+            --grey-100: #f7f8fa; --grey-200: #eef0f4; --grey-300: #d4d8e0;
         }
         body { font-family: 'DM Sans', sans-serif; background: var(--grey-100); margin: 0; color: #333; }
+        
+        /* HEADER & NAV */
         .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%); padding: 30px; color: white; text-align: center; }
+        .nav-bar { background: var(--navy); display: flex; justify-content: center; sticky: top; }
+        .nav-btn { background: none; border: none; color: white; padding: 15px 20px; cursor: pointer; font-weight: bold; border-bottom: 3px solid transparent; }
+        .nav-btn.active { border-bottom: 3px solid var(--gold); color: var(--gold); }
+
         .main { max-width: 1100px; margin: 20px auto; padding: 0 20px; }
         
+        /* CARDS & TABLES */
         .card { background: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px; overflow: hidden; }
         .card-header { padding: 15px 20px; background: var(--navy); color: white; display: flex; justify-content: space-between; align-items: center; }
         .card-body { padding: 20px; }
+        .section { display: none; }
+        .section.active { display: block; }
 
         table { width: 100%; border-collapse: collapse; font-size: 13px; }
         th { background: #f0f2f5; padding: 12px; border: 1px solid var(--grey-300); }
         td { padding: 8px; border: 1px solid var(--grey-300); text-align: center; }
         input { width: 100%; padding: 6px; border: 1px solid var(--grey-300); border-radius: 4px; text-align: center; }
 
+        /* WIDGETS */
         .totais-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .tot-card { padding: 20px; border-radius: 8px; background: white; border-bottom: 4px solid var(--navy); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .tot-label { font-size: 12px; font-weight: bold; color: #666; text-transform: uppercase; }
@@ -33,171 +43,223 @@
         .status-banner.red { background: #ffebee; color: var(--red); border: 1px solid var(--red); }
         .status-banner.green { background: #e8f5e9; color: var(--green); border: 1px solid var(--green); }
 
+        .projection-box { background: var(--navy); color: white; padding: 20px; border-radius: 8px; text-align: center; margin-top: 20px; }
+        
+        .rule-item { margin-bottom: 15px; padding-left: 10px; border-left: 4px solid var(--gold); }
+        .rule-item h4 { margin: 0 0 5px 0; color: var(--navy); }
+
         .btn { padding: 10px 15px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; }
         .btn-add { background: var(--teal); color: white; }
-        .btn-grade { background: var(--gold); color: white; margin-right: 10px; }
-        
-        .alert-row td { background-color: #fff5f5 !important; color: var(--red); }
-        .projection-box { background: var(--navy); color: white; padding: 20px; border-radius: 8px; text-align: center; margin-top: 20px; }
+        .btn-grade { background: var(--gold); color: white; }
+
+        .calc-dia-box { background: #eef2f7; padding: 15px; border-radius: 8px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     </style>
 </head>
 <body>
 
 <div class="hero">
-    <h1>Controle de Benefícios SEDUC-SP</h1>
-    <p>Calculadora de Licença Prêmio com Projeção de Datas</p>
+    <h1>Controle de Vida Funcional SEDUC-SP</h1>
+    <p>Licença Prêmio, Quinquênio e Sexta Parte</p>
 </div>
 
-<div class="main">
-    <div id="banner-status" class="status-banner green">✅ Sistema pronto para cálculos.</div>
+<div class="nav-bar">
+    <button class="nav-btn active" onclick="showSec('regras')">📖 Regras e Info</button>
+    <button class="nav-btn" onclick="showSec('lp')">🏅 Licença Prêmio</button>
+    <button class="nav-btn" onclick="showSec('qq')">📅 QQ / Sexta Parte</button>
+    <button class="nav-btn" onclick="showSec('calc')">🧮 Calculadora de Datas</button>
+</div>
 
-    <div class="totais-grid">
-        <div class="tot-card"><div class="tot-label">Dias Efetivos Totais</div><div class="tot-value" id="res-efetivo">0</div></div>
-        <div class="tot-card"><div class="tot-label">Blocos Adquiridos</div><div class="tot-value" id="res-blocos">0</div></div>
-        <div class="tot-card"><div class="tot-label">Dias Restantes (Próximo)</div><div class="tot-value" id="res-restante">1826</div></div>
-    </div>
+<main class="main">
 
-    <div class="card">
-        <div class="card-header">
-            <h2>Lançamento de Vínculos</h2>
-            <div>
-                <button class="btn btn-grade" onclick="gerarGrade()">📅 Gerar Grade 6 Anos</button>
-                <button class="btn btn-add" onclick="addRow()">+ Novo Ano</button>
+    <!-- SEÇÃO REGRAS -->
+    <div id="regras" class="section active">
+        <div class="card">
+            <div class="card-header"><h2>Requisitos e Orientações Legais</h2></div>
+            <div class="card-body">
+                <div class="rule-item">
+                    <h4>🏅 Licença Prêmio (LC 1048/08)</h4>
+                    <p>A cada 5 anos de efetivo exercício, o servidor tem direito a 90 dias de licença. 
+                    <b>Limite de Faltas:</b> Até 30 dias (regra antiga até 31/10/21) ou 25 dias (nova regra após 01/11/21). 
+                    Faltas injustificadas interrompem o bloco.</p>
+                </div>
+                <div class="rule-item">
+                    <h4>📅 Quinquênio (ATS)</h4>
+                    <p>Adicional de 5% sobre o salário base a cada 5 anos. Diferente da LP, o quinquênio é concedido pelo tempo de serviço, descontando apenas afastamentos sem vencimentos e faltas injustificadas.</p>
+                </div>
+                <div class="rule-item">
+                    <h4>⭐ Sexta Parte</h4>
+                    <p>Direito adquirido ao completar 20 anos de efetivo exercício. Equivale a 1/6 do salário bruto incorporado aos vencimentos.</p>
+                </div>
+                <div class="status-banner green">Dica: Use a aba "Calculadora de Datas" para ver quantos dias existem entre duas datas ou somar dias a uma data específica.</div>
             </div>
         </div>
-        <div class="card-body">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Início</th>
-                        <th>Fim</th>
-                        <th>F. Justif.</th>
-                        <th>F. Médica</th>
-                        <th>Lic. Saúde</th>
-                        <th>Abonada (Até 10/21)</th>
-                        <th>F. Injust.</th>
-                        <th>Efetivo</th>
-                        <th>Limite</th>
-                    </tr>
-                </thead>
-                <tbody id="tabela-corpo"></tbody>
-            </table>
+    </div>
+
+    <!-- SEÇÃO LICENÇA PRÊMIO -->
+    <div id="lp" class="section">
+        <div class="totais-grid">
+            <div class="tot-card"><div class="tot-label">Efetivo LP</div><div class="tot-value" id="lp-efetivo">0</div></div>
+            <div class="tot-card"><div class="tot-label">Blocos</div><div class="tot-value" id="lp-blocos">0</div></div>
+            <div class="tot-card"><div class="tot-label">Restante</div><div class="tot-value" id="lp-restante">1826</div></div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h2>Vínculos LP</h2>
+                <button class="btn btn-grade" onclick="gerarGrade('lp')">Gerar Grade 6 Anos</button>
+            </div>
+            <div class="card-body">
+                <table id="tbl-lp">
+                    <thead><tr><th>Início</th><th>Fim</th><th>F. Just.</th><th>F. Méd.</th><th>Lic. Saúde</th><th>Abonada</th><th>F. Inj.</th><th>Efetivo</th></tr></thead>
+                    <tbody id="body-lp"></tbody>
+                </table>
+                <button class="btn btn-add" style="margin-top:10px" onclick="addRow('lp')">+ Novo Período</button>
+            </div>
+        </div>
+        <div class="projection-box">
+            <div style="font-size:12px; opacity:0.7">PREVISÃO PRÓXIMO BLOCO</div>
+            <div id="lp-data-prev" style="font-size:28px; font-weight:bold">--/--/----</div>
         </div>
     </div>
 
-    <div class="projection-box">
-        <h3 style="margin: 0; font-size: 14px; text-transform: uppercase; opacity: 0.8;">Previsão do Próximo Bloco</h3>
-        <div id="res-data-previsao" style="font-size: 32px; font-weight: bold; margin: 10px 0;">-- / -- / ----</div>
-        <div id="res-obs-previsao">Insira as datas para projetar o direito.</div>
+    <!-- SEÇÃO QUINQUÊNIO / SEXTA PARTE -->
+    <div id="qq" class="section">
+        <div class="totais-grid">
+            <div class="tot-card"><div class="tot-label">Total Efetivo</div><div class="tot-value" id="qq-efetivo">0</div></div>
+            <div class="tot-card"><div class="tot-label">Quinquênios</div><div class="tot-value" id="qq-blocos">0</div></div>
+            <div class="tot-card"><div class="tot-label">Sexta Parte (Anos)</div><div class="tot-value" id="sp-anos">0</div></div>
+        </div>
+        <div class="card">
+            <div class="card-header"><h2>Vínculos QQ / SP</h2></div>
+            <div class="card-body">
+                <table id="tbl-qq">
+                    <thead><tr><th>Início</th><th>Fim</th><th>Lic. s/ Venc</th><th>F. Inj.</th><th>Suspensão</th><th>Efetivo</th></tr></thead>
+                    <tbody id="body-qq"></tbody>
+                </table>
+                <button class="btn btn-add" style="margin-top:10px" onclick="addRow('qq')">+ Novo Período</button>
+            </div>
+        </div>
     </div>
-</div>
+
+    <!-- CALCULADORA DE DIAS -->
+    <div id="calc" class="section">
+        <div class="card">
+            <div class="card-header"><h2>Calculadora Utilitária</h2></div>
+            <div class="card-body">
+                <h3>1. Diferença entre Datas</h3>
+                <div class="calc-dia-box">
+                    De: <input type="text" id="c-de" placeholder="dd/mm/aaaa" style="width:120px">
+                    Até: <input type="text" id="c-ate" placeholder="dd/mm/aaaa" style="width:120px">
+                    <button class="btn btn-add" onclick="calcDif()">Calcular</button>
+                    <div id="res-dif" style="font-weight:bold; color:var(--navy)">0 dias</div>
+                </div>
+                <hr>
+                <h3>2. Somar Dias a uma Data</h3>
+                <div class="calc-dia-box">
+                    Data: <input type="text" id="s-data" placeholder="dd/mm/aaaa" style="width:120px">
+                    Dias: <input type="number" id="s-dias" style="width:80px">
+                    <button class="btn btn-add" onclick="calcSoma()">Somar</button>
+                    <div id="res-soma" style="font-weight:bold; color:var(--navy)">--/--/----</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
 
 <script>
-    const CORTE_LEI = new Date('2021-11-01');
-    const DIAS_BLOCO = 1826;
-    let dados = JSON.parse(localStorage.getItem('seduc_felipe_v3')) || [];
+    let dbLP = JSON.parse(localStorage.getItem('f_db_lp')) || [];
+    let dbQQ = JSON.parse(localStorage.getItem('f_db_qq')) || [];
 
-    function save() { localStorage.setItem('seduc_felipe_v3', JSON.stringify(dados)); calcular(); }
+    function showSec(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        event.target.classList.add('active');
+    }
 
-    function addRow() {
-        dados.push({ ini: '', fim: '', fj: 0, fm: 0, ls: 0, ab: 0, fi: 0 });
+    function parseD(s) { if(!s) return null; const p=s.split('/'); return new Date(p[2],p[1]-1,p[0]); }
+    function fmtD(d) { return d.toLocaleDateString('pt-BR'); }
+
+    function addRow(mode) {
+        if(mode==='lp') dbLP.push({i:'',f:'',fj:0,fm:0,ls:0,ab:0,fi:0});
+        else dbQQ.push({i:'',f:'',sv:0,fi:0,sus:0});
         render();
-    }
-
-    function gerarGrade() {
-        dados = [];
-        const anoAtu = new Date().getFullYear();
-        for(let i=5; i>=0; i--) {
-            dados.push({ ini: `01/01/${anoAtu-i}`, fim: `31/12/${anoAtu-i}`, fj: 0, fm: 0, ls: 0, ab: 0, fi: 0 });
-        }
-        render();
-    }
-
-    function parseData(str) {
-        if(!str) return null;
-        const p = str.split('/');
-        return new Date(p[2], p[1]-1, p[0]);
-    }
-
-    function calcular() {
-        let totalEfetivo = 0;
-        let dataReferencia = null;
-        let erroFaltas = false;
-
-        dados.forEach((d, idx) => {
-            const inicio = parseData(d.ini);
-            const fim = parseData(d.fim) || new Date();
-            if(!dataReferencia && inicio) dataReferencia = inicio;
-
-            if(inicio) {
-                const isAntigo = fim < CORTE_LEI;
-                const limite = isAntigo ? 30 : 25;
-                const abonada = isAntigo ? Number(d.ab) : 0;
-                
-                const faltasContam = Number(d.fj) + Number(d.fm) + Number(d.ls) + abonada;
-                const faltasInterrompem = Number(d.fi);
-                
-                const brutos = Math.round((fim - inicio) / 86400000) + 1;
-                const liq = brutos - (faltasContam + faltasInterrompem);
-                
-                totalEfetivo += liq;
-                
-                // Se estourou, marcamos mas não paramos o cálculo
-                if(faltasContam > limite || faltasInterrompem > 0) erroFaltas = true;
-                
-                document.getElementById(`efetivo-${idx}`).innerText = liq;
-                document.getElementById(`limite-${idx}`).innerText = limite + 'd';
-                document.getElementById(`row-${idx}`).className = (faltasContam > limite || faltasInterrompem > 0) ? 'alert-row' : '';
-            }
-        });
-
-        const blocosCompletos = Math.floor(totalEfetivo / DIAS_BLOCO);
-        const diasRestantes = DIAS_BLOCO - (totalEfetivo % DIAS_BLOCO);
-
-        document.getElementById('res-efetivo').innerText = totalEfetivo;
-        document.getElementById('res-blocos').innerText = blocosCompletos;
-        document.getElementById('res-restante').innerText = diasRestantes;
-
-        // Projeção de Data
-        if(dataReferencia) {
-            const dataProj = new Date();
-            dataProj.setDate(dataProj.getDate() + diasRestantes);
-            
-            document.getElementById('res-data-previsao').innerText = dataProj.toLocaleDateString('pt-BR');
-            document.getElementById('res-obs-previsao').innerText = erroFaltas 
-                ? "⚠️ Atenção: Períodos com excesso de faltas adiam a data final." 
-                : "Calendário estimado com base no fluxo atual.";
-        }
-
-        const banner = document.getElementById('banner-status');
-        if(erroFaltas) {
-            banner.className = "status-banner red";
-            banner.innerText = "⚠️ Existem períodos que excedem o limite de 25/30 faltas ou possuem falta injustificada.";
-        } else {
-            banner.className = "status-banner green";
-            banner.innerText = "✅ Todos os períodos estão dentro do limite legal.";
-        }
     }
 
     function render() {
-        const corpo = document.getElementById('tabela-corpo');
-        corpo.innerHTML = '';
-        dados.forEach((d, i) => {
-            corpo.innerHTML += `
-                <tr id="row-${i}">
-                    <td><input value="${d.ini}" onchange="dados[${i}].ini=this.value; save()"></td>
-                    <td><input value="${d.fim}" onchange="dados[${i}].fim=this.value; save()"></td>
-                    <td><input type="number" value="${d.fj}" onchange="dados[${i}].fj=this.value; save()"></td>
-                    <td><input type="number" value="${d.fm}" onchange="dados[${i}].fm=this.value; save()"></td>
-                    <td><input type="number" value="${d.ls}" onchange="dados[${i}].ls=this.value; save()"></td>
-                    <td><input type="number" value="${d.ab}" onchange="dados[${i}].ab=this.value; save()"></td>
-                    <td><input type="number" value="${d.fi}" onchange="dados[${i}].fi=this.value; save()"></td>
-                    <td id="efetivo-${i}" style="font-weight:bold">0</td>
-                    <td id="limite-${i}" style="font-size:11px">25d</td>
-                </tr>
-            `;
+        localStorage.setItem('f_db_lp', JSON.stringify(dbLP));
+        localStorage.setItem('f_db_qq', JSON.stringify(dbQQ));
+        
+        // Render LP
+        const bLP = document.getElementById('body-lp'); bLP.innerHTML='';
+        let efLP = 0;
+        dbLP.forEach((d,i) => {
+            const ini=parseD(d.i), fim=parseD(d.f)||new Date();
+            let liq = 0;
+            if(ini){
+                const limit = fim < new Date('2021-11-01') ? 30 : 25;
+                const abEfet = fim < new Date('2021-11-01') ? Number(d.ab) : 0;
+                liq = (Math.round((fim-ini)/86400000)+1) - (Number(d.fj)+Number(d.fm)+Number(d.ls)+Number(d.fi)+abEfet);
+                efLP += liq;
+            }
+            bLP.innerHTML += `<tr>
+                <td><input value="${d.i}" onchange="dbLP[${i}].i=this.value;render()"></td>
+                <td><input value="${d.f}" onchange="dbLP[${i}].f=this.value;render()"></td>
+                <td><input type="number" value="${d.fj}" onchange="dbLP[${i}].fj=this.value;render()"></td>
+                <td><input type="number" value="${d.fm}" onchange="dbLP[${i}].fm=this.value;render()"></td>
+                <td><input type="number" value="${d.ls}" onchange="dbLP[${i}].ls=this.value;render()"></td>
+                <td><input type="number" value="${d.ab}" onchange="dbLP[${i}].ab=this.value;render()"></td>
+                <td><input type="number" value="${d.fi}" onchange="dbLP[${i}].fi=this.value;render()"></td>
+                <td style="font-weight:bold">${liq}</td>
+            </tr>`;
         });
-        calcular();
+        document.getElementById('lp-efetivo').innerText = efLP;
+        document.getElementById('lp-blocos').innerText = Math.floor(efLP/1826);
+        const restLP = 1826 - (efLP % 1826);
+        document.getElementById('lp-restante').innerText = restLP;
+        const pDate = new Date(); pDate.setDate(pDate.getDate()+restLP);
+        document.getElementById('lp-data-prev').innerText = efLP > 0 ? fmtD(pDate) : '--/--/----';
+
+        // Render QQ
+        const bQQ = document.getElementById('body-qq'); bQQ.innerHTML='';
+        let efQQ = 0;
+        dbQQ.forEach((d,i) => {
+            const ini=parseD(d.i), fim=parseD(d.f)||new Date();
+            let liq = 0;
+            if(ini){
+                liq = (Math.round((fim-ini)/86400000)+1) - (Number(d.sv)+Number(d.fi)+Number(d.sus));
+                efQQ += liq;
+            }
+            bQQ.innerHTML += `<tr>
+                <td><input value="${d.i}" onchange="dbQQ[${i}].i=this.value;render()"></td>
+                <td><input value="${d.f}" onchange="dbQQ[${i}].f=this.value;render()"></td>
+                <td><input type="number" value="${d.sv}" onchange="dbQQ[${i}].sv=this.value;render()"></td>
+                <td><input type="number" value="${d.fi}" onchange="dbQQ[${i}].fi=this.value;render()"></td>
+                <td><input type="number" value="${d.sus}" onchange="dbQQ[${i}].sus=this.value;render()"></td>
+                <td style="font-weight:bold">${liq}</td>
+            </tr>`;
+        });
+        document.getElementById('qq-efetivo').innerText = efQQ;
+        document.getElementById('qq-blocos').innerText = Math.floor(efQQ/1826);
+        document.getElementById('sp-anos').innerText = (efQQ/365.25).toFixed(1);
+    }
+
+    function gerarGrade(mode) {
+        const ano = new Date().getFullYear();
+        if(mode==='lp'){ dbLP=[]; for(let i=5;i>=0;i--) dbLP.push({i:`01/01/${ano-i}`,f:`31/12/${ano-i}`,fj:0,fm:0,ls:0,ab:0,fi:0}); }
+        render();
+    }
+
+    // Calculadoras Extras
+    function calcDif() {
+        const d1 = parseD(document.getElementById('c-de').value);
+        const d2 = parseD(document.getElementById('c-ate').value);
+        if(d1 && d2) document.getElementById('res-dif').innerText = (Math.round((d2-d1)/86400000)+1) + " dias";
+    }
+    function calcSoma() {
+        const d = parseD(document.getElementById('s-data').value);
+        const n = Number(document.getElementById('s-dias').value);
+        if(d) { d.setDate(d.getDate()+n); document.getElementById('res-soma').innerText = fmtD(d); }
     }
 
     render();
