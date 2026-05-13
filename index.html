@@ -30,19 +30,16 @@
         .section { display: none; }
         .section.active { display: block; }
 
-        /* TABELAS */
         table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 10px; }
         th { background: #f0f2f5; padding: 12px; border: 1px solid var(--grey-300); color: var(--navy); }
         td { padding: 8px; border: 1px solid var(--grey-300); text-align: center; }
         input { width: 100%; padding: 6px; border: 1px solid var(--grey-300); border-radius: 4px; text-align: center; font-family: 'DM Sans', sans-serif; }
 
-        /* INSTRUÇÕES E COMPARATIVO */
         .comp-table th { background: var(--navy); color: white; }
         .new-rule { background: #eaf5ea !important; color: var(--green); font-weight: 600; }
         .old-rule { background: #fff4ec !important; color: #a05000; }
         .step-num { display: inline-flex; width: 24px; height: 24px; background: var(--gold); color: var(--navy); border-radius: 50%; justify-content: center; align-items: center; font-weight: bold; margin-right: 10px; }
 
-        /* TOTAIS E PROJEÇÃO (NO FINAL) */
         .totais-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 25px; }
         .tot-card { padding: 20px; border-radius: 8px; background: white; border-left: 5px solid var(--navy); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .tot-label { font-size: 11px; font-weight: bold; color: #666; text-transform: uppercase; letter-spacing: 1px; }
@@ -53,13 +50,26 @@
         .btn { padding: 10px 15px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn-add { background: var(--teal); color: white; }
         .btn-grade { background: var(--gold); color: var(--navy); }
-        .btn-add:hover, .btn-grade:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-pdf { background: #333; color: white; }
 
         .status-banner { padding: 15px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-weight: 500; }
         .status-banner.red { background: #fee2e2; color: var(--red); border: 1px solid #fecaca; }
         .status-banner.green { background: #dcfce7; color: var(--green); border: 1px solid #bbf7d0; }
 
         .calc-dia-box { background: #f1f5f9; padding: 20px; border-radius: 8px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+
+        /* CSS DE IMPRESSÃO - PARA FICAR PERFEITO NO PDF */
+        @media print {
+            .hero, .nav-bar, .btn, .btn-add, .btn-grade, .btn-pdf, .nav-btn, hr { display: none !important; }
+            .main { margin: 0; padding: 0; width: 100%; }
+            .card { box-shadow: none; border: 1px solid #ddd; }
+            input { border: none; background: none; -webkit-appearance: none; }
+            .section { display: none !important; }
+            .section.active { display: block !important; }
+            .totais-grid { grid-template-columns: 1fr 1fr 1fr; }
+            .projection-box { background: #0f2744 !important; color: white !important; -webkit-print-color-adjust: exact; }
+            body { background: white; }
+        }
     </style>
 </head>
 <body>
@@ -70,60 +80,22 @@
 </div>
 
 <div class="nav-bar">
-    <button class="nav-btn active" onclick="showSec('instrucoes')">ℹ️ Instruções e Regras</button>
+    <button class="nav-btn active" onclick="showSec('instrucoes')">ℹ️ Instruções</button>
     <button class="nav-btn" onclick="showSec('lp')">🏅 Licença Prêmio</button>
     <button class="nav-btn" onclick="showSec('qq')">📅 QQ / Sexta Parte</button>
-    <button class="nav-btn" onclick="showSec('calc')">🧮 Calculadora de Datas</button>
+    <button class="nav-btn" onclick="showSec('calc')">🧮 Calculadora</button>
 </div>
 
 <main class="main">
 
-    <!-- SEÇÃO INSTRUÇÕES (A QUE VOCÊ GOSTOU) -->
+    <!-- SEÇÃO INSTRUÇÕES -->
     <div id="instrucoes" class="section active">
         <div class="card">
             <div class="card-header"><h2>Como usar o sistema</h2></div>
             <div class="card-body">
-                <p><span class="step-num">1</span> Vá na aba desejada (LP ou Quinquênio) e use o botão <strong>Gerar Grade 6 Anos</strong> para facilitar o lançamento.</p>
-                <p><span class="step-num">2</span> Preencha as datas e as faltas de acordo com o prontuário/SED.</p>
-                <p><span class="step-num">3</span> <strong>Falta Injustificada (FI):</strong> O sistema detecta automaticamente e <strong>quebra o bloco</strong> de Licença Prêmio, reiniciando o cálculo.</p>
-                <p><span class="step-num">4</span> Os resultados e a <strong>Previsão do Próximo Bloco</strong> aparecem no final da página após as tabelas.</p>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header"><h2>Comparativo: Nova Resolução vs. Anterior (Licença Prêmio)</h2></div>
-            <div class="card-body" style="overflow-x: auto;">
-                <table class="comp-table">
-                    <thead>
-                        <tr>
-                            <th>Critério</th>
-                            <th class="new-rule">Nova Res. (Pós 01/11/2021)</th>
-                            <th class="old-rule">Res. Anterior (Até 31/10/2021)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Limite de Faltas</strong></td>
-                            <td class="new-rule">25 Dias</td>
-                            <td class="old-rule">30 Dias</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Falta Abonada</strong></td>
-                            <td class="new-rule">NÃO conta no limite</td>
-                            <td class="old-rule">CONTA no limite</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Falta Injustificada</strong></td>
-                            <td class="new-rule">INTERROMPE o Bloco</td>
-                            <td class="old-rule">INTERROMPE o Bloco</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Licença Saúde</strong></td>
-                            <td class="new-rule">Conta no limite de 25d</td>
-                            <td class="old-rule">Conta no limite de 30d</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <p><span class="step-num">1</span> Vá na aba 🏅 <strong>Licença Prêmio</strong> ou 📅 <strong>Quinquênio</strong>.</p>
+                <p><span class="step-num">2</span> Preencha os dados e observe a interrupção automática por Falta Injustificada.</p>
+                <p><span class="step-num">3</span> Ao finalizar, clique no botão <strong>"Gerar PDF/Imprimir"</strong> no topo da tabela.</p>
             </div>
         </div>
     </div>
@@ -134,7 +106,10 @@
         <div class="card">
             <div class="card-header">
                 <h2>Vínculos LP (Lançamento Anual)</h2>
-                <button class="btn btn-grade" onclick="gerarGradeLP()">📅 Gerar Grade 6 Anos</button>
+                <div>
+                    <button class="btn btn-pdf" onclick="window.print()">🖨️ Gerar PDF/Imprimir</button>
+                    <button class="btn btn-grade" onclick="gerarGradeLP()">📅 Grade 6 Anos</button>
+                </div>
             </div>
             <div class="card-body" style="overflow-x: auto;">
                 <table>
@@ -163,7 +138,10 @@
     <!-- SEÇÃO QUINQUÊNIO -->
     <div id="qq" class="section">
         <div class="card">
-            <div class="card-header"><h2>Vínculos Quinquênio e Sexta Parte</h2></div>
+            <div class="card-header">
+                <h2>Vínculos Quinquênio e Sexta Parte</h2>
+                <button class="btn btn-pdf" onclick="window.print()">🖨️ Gerar PDF/Imprimir</button>
+            </div>
             <div class="card-body" style="overflow-x: auto;">
                 <table>
                     <thead>
@@ -186,7 +164,7 @@
     <!-- CALCULADORA -->
     <div id="calc" class="section">
         <div class="card">
-            <div class="card-header"><h2>Calculadora de Datas (Uso Diário)</h2></div>
+            <div class="card-header"><h2>Calculadora Utilitária</h2></div>
             <div class="card-body">
                 <h3>Diferença entre Datas</h3>
                 <div class="calc-dia-box">
@@ -290,11 +268,11 @@
         if(interrompido) {
             banner.className = "status-banner red";
             banner.innerText = "⛔ Bloco reiniciado por Falta Injustificada.";
-            box.style.background = "#9c0006";
+            if(box) box.style.background = "#9c0006";
         } else {
             banner.className = "status-banner green";
             banner.innerText = "✅ Período sem interrupções registradas.";
-            box.style.background = "var(--navy)";
+            if(box) box.style.background = "var(--navy)";
         }
 
         // QQ LOGIC
